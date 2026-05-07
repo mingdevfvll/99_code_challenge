@@ -1,5 +1,5 @@
-// sum_to_n_a.test.js
-const { sum_to_n_a } = require('../sum_to_n_a.js');
+// sum_to_n_b.test.js
+const { sum_to_n_b } = require('../sum_to_n_b.js');
 
 const cases = [
   { n: 5, expected: 15, desc: 'Sum 1..5' },
@@ -10,21 +10,21 @@ const cases = [
 function run() {
   const line = '─'.repeat(48);
   console.log(`\n${line}`);
-  console.log('  sum_to_n_a — tests');
+  console.log('  sum_to_n_b — tests');
   console.log(line);
 
   let failed = 0;
 
   for (let i = 0; i < cases.length; i++) {
     const { n, expected, desc } = cases[i];
-    const actual = sum_to_n_a(n);
+    const actual = sum_to_n_b(n);
     const ok = actual === expected;
     const idx = i + 1;
 
     if (!ok) failed++;
 
     console.log(`  Case ${idx}/${cases.length}: ${desc}`);
-    console.log(`    sum_to_n_a(${n})  →  got: ${actual}  |  expected: ${expected}`);
+    console.log(`    sum_to_n_b(${n})  →  got: ${actual}  |  expected: ${expected}`);
     console.log(`    ${ok ? '✓ Pass' : '✗ Fail'}\n`);
   }
 
