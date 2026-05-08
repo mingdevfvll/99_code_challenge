@@ -258,9 +258,9 @@ Use the following when working through Problem 3:
 
 1. **Start with this file ([Solution.md](./Solution.md)).** It lists every bug, logic issue, performance concern, and anti-pattern in the original snippet, with severity and suggested fixes. Read it end-to-end before or while comparing against the annotated and fixed code.
 
-2. **[`WalletPage/note_code.tsx`](./WalletPage/note_code.tsx)** — The messy exercise code with **inline English comments** tied to each issue (same numbering as above). Use it as your **review notes**: what is wrong and what to change, without replacing the buggy behavior in that file.
+2. **[`code-solution/note_code.tsx`](./code-solution/note_code.tsx)** — The messy exercise code with **inline English comments** tied to each issue (same numbering as above). Use it as your **review notes**: what is wrong and what to change, without replacing the buggy behavior in that file.
 
-3. **[`WalletPage/fixed_solution.tsx`](./WalletPage/fixed_solution.tsx)** — The **submitted / reference solution**: corrected implementation that applies the fixes described in [Solution.md](./Solution.md).
+3. **[`code-solution/fixed_solution.tsx`](./code-solution/fixed_solution.tsx)** — The **submitted / reference solution**: corrected implementation that applies the fixes described in [Solution.md](./Solution.md).
 
 4. **[`wallet-app/`](./wallet-app/)** — A **self-contained Next.js 16** demo package that reproduces the wallet UI as a runnable app. Logic and UI are **split across modules** (for example mock data in [`data/`](./wallet-app/data/), helpers in [`lib/`](./wallet-app/lib/), presentational pieces under [`components/`](./wallet-app/components/), types in [`types/`](./wallet-app/types/)). Open [`wallet-app/package.json`](./wallet-app/package.json) and run the dev script from that folder if you want to explore the full demo locally.
 
@@ -269,8 +269,8 @@ Use the following when working through Problem 3:
 | Path | Role |
 |------|------|
 | [Solution.md](./Solution.md) | Full code-review write-up: bugs, logic issues, performance notes, anti-patterns, fixes, and summary table. |
-| [WalletPage/note_code.tsx](./WalletPage/note_code.tsx) | Original messy snippet kept intentionally buggy; inline comments map each issue to the numbered findings above (study / grading notes). |
-| [WalletPage/fixed_solution.tsx](./WalletPage/fixed_solution.tsx) | Reference implementation applying the fixes from [Solution.md](./Solution.md). |
+| [code-solution/note_code.tsx](./code-solution/note_code.tsx) | Original messy snippet kept intentionally buggy; inline comments map each issue to the numbered findings above (study / grading notes). |
+| [code-solution/fixed_solution.tsx](./code-solution/fixed_solution.tsx) | Reference implementation applying the fixes from [Solution.md](./Solution.md). |
 | [wallet-app/](./wallet-app/) | Runnable Next.js 16 demo app root (routing under `app/`, config, styles). |
 | [wallet-app/package.json](./wallet-app/package.json) | Dependencies and npm scripts (e.g. `dev`) to run the demo locally. |
 | [wallet-app/data/](./wallet-app/data/) | Mock wallet / price data used by the demo. |
@@ -278,4 +278,4 @@ Use the following when working through Problem 3:
 | [wallet-app/components/](./wallet-app/components/) | UI building blocks for the wallet screen. |
 | [wallet-app/types/](./wallet-app/types/) | Shared TypeScript types for wallet-related data. |
 
-**Suggested order:** Read [Solution.md](./Solution.md) → skim [note_code.tsx](./WalletPage/note_code.tsx) for annotated pitfalls → compare with [fixed_solution.tsx](./WalletPage/fixed_solution.tsx) → optionally run [wallet-app](./wallet-app/) to see a modular, production-style layout.
+**Suggested order:** Read [Solution.md](./Solution.md) → skim [note_code.tsx](./code-solution/note_code.tsx) for annotated pitfalls → compare with [fixed_solution.tsx](./code-solution/fixed_solution.tsx) → optionally run [wallet-app](./wallet-app/) to see a modular, production-style layout.
