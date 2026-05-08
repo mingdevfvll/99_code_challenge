@@ -53,7 +53,7 @@ export function SwapForm() {
       <div className="mt-6 flex flex-col gap-4">
         <motion.section variants={sectionVariants} className="flex flex-col gap-3">
           <TokenSelector
-            label="YOU PAY"
+            label="SEND"
             value={fromToken}
             tokens={tokens}
             disabled={isFormDisabled}
@@ -75,7 +75,7 @@ export function SwapForm() {
 
         <motion.section variants={sectionVariants} className="flex flex-col gap-3">
           <TokenSelector
-            label="YOU RECEIVE"
+            label="RECEIVE"
             value={toToken}
             tokens={tokens}
             disabled={isFormDisabled}
