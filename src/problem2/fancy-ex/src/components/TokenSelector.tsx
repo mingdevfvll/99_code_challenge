@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { TokenIcon } from "@/components/TokenIcon";
+import { formatUsd } from "@/lib/numbers/currency-format";
 import { cn } from "@/lib/utils";
 
 export interface TokenSelectorProps {
@@ -28,15 +29,6 @@ export interface TokenSelectorProps {
   onChange: (token: Token) => void;
   disabled?: boolean;
   error?: string;
-}
-
-function formatUsd(price: number): string {
-  return price.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 6,
-  });
 }
 
 export function TokenSelector({

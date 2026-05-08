@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { Token } from "@/types";
+import { formatExchangeRate } from "@/lib/numbers/currency-format";
 import { useScramble } from "@/hooks/useScramble";
 
 export interface ExchangeRateProps {
@@ -11,14 +12,6 @@ export interface ExchangeRateProps {
 interface ExchangeRateContentProps {
   fromToken: Token;
   toToken: Token;
-}
-
-function formatExchangeRate(fromToken: Token, toToken: Token): string {
-  if (toToken.price <= 0) return "0";
-
-  return (fromToken.price / toToken.price).toLocaleString("en-US", {
-    maximumFractionDigits: 6,
-  });
 }
 
 function ExchangeRateContent({

@@ -1,23 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import {
+  ASCII_ART,
+  ASCII_HEAD,
+  ASCII_LOGO_LINE_PREFIX,
+  SUBTITLE,
+  TAGLINES,
+} from "@/lib/ascii-logo";
 import { useAsciiReveal } from "@/hooks/useAsciiReveal";
 import { useCenterOutScramble } from "@/hooks/useCenterOutScramble";
 import { useScramble } from "@/hooks/useScramble";
-
-const ASCII_HEAD = ` ___  ___  ____  ____  ____ 
-/ __)/ __)/ ___)(  _ \\(  __)
-\\__ \\\\__ \\\\__ \\ ) __/ ) _) 
-(___/(___/(____/(__)  (____)`;
-const ASCII_LOGO_LINE_PREFIX = "     ";
-/** Same width keeps the ASCII block aligned while scrambling. */
-const TAGLINE_WIDTH = 21;
-const TAGLINES = [
-  "CURRENCY SWAP  v1.0".padEnd(TAGLINE_WIDTH),
-  "MOVE VALUE IN ONE TAP",
-] as const;
-const ASCII_ART = `${ASCII_HEAD}
-${ASCII_LOGO_LINE_PREFIX}${TAGLINES[0]}`;
-const SUBTITLE = "DECENTRALIZED · INSTANT · TRUSTLESS";
 
 export interface AsciiLogoProps {
   onComplete?: () => void;

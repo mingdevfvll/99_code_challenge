@@ -1,16 +1,14 @@
-import { type ChangeEvent, useEffect, useId, useRef } from "react";
+import { type ChangeEvent, useId } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import "number-flow";
-import type NumberFlowElement from "number-flow";
 
 import { Input } from "@/components/ui/input";
+import {
+  DECIMAL_INPUT_PATTERN,
+  NUMBER_FLOW_FORMAT,
+  NumberFlowOutput,
+  parseDisplayValue,
+} from "@/lib/numbers/amount-number-flow";
 import { cn } from "@/lib/utils";
-
-const DECIMAL_INPUT_PATTERN = /^[0-9]*\.?[0-9]*$/;
-const NUMBER_FLOW_FORMAT = {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 6,
-} as const satisfies Intl.NumberFormatOptions;
 
 export interface AmountInputProps {
   label: string;
@@ -20,30 +18,6 @@ export interface AmountInputProps {
   disabled?: boolean;
   error?: string;
   placeholder?: string;
-}
-
-interface NumberFlowOutputProps {
-  value: number;
-  format: typeof NUMBER_FLOW_FORMAT;
-}
-
-function parseDisplayValue(value: string): number {
-  const parsed = Number.parseFloat(value);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function NumberFlowOutput({ value, format }: NumberFlowOutputProps) {
-  const numberFlowRef = useRef<NumberFlowElement | null>(null);
-
-  useEffect(() => {
-    const numberFlow = numberFlowRef.current;
-    if (!numberFlow) return;
-
-    numberFlow.format = format;
-    numberFlow.update(value);
-  }, [format, value]);
-
-  return <number-flow ref={numberFlowRef} />;
 }
 
 export function AmountInput({
@@ -70,7 +44,7 @@ export function AmountInput({
     <div className="flex flex-col gap-2">
       <label
         htmlFor={id}
-        className="font-sans text-xs font-semibold uppercase tracking-wider text-muted-fg"
+        className="font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-fg"
       >
         {label}
       </label>

@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
+import { useIsClientMounted } from "@/hooks/useIsClientMounted";
 
 export function ThemeToggle() {
-  const [isMounted, setIsMounted] = useState(false);
+  const isClientMounted = useIsClientMounted();
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const label = "Toggle theme";
-
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      setIsMounted(true);
-    }, 0);
-
-    return () => {
-      window.clearTimeout(id);
-    };
-  }, []);
 
   function handleToggleTheme() {
     setTheme(isDark ? "light" : "dark");
@@ -40,7 +30,7 @@ export function ThemeToggle() {
         whileTap={{ scale: 0.9 }}
         onClick={handleToggleTheme}
       >
-        {isMounted && isDark ? (
+        {isClientMounted && isDark ? (
           <Moon aria-hidden="true" />
         ) : (
           <Sun aria-hidden="true" />
