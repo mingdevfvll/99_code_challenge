@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #f63d19;
+    --color-bg: #ffffff;
+    --color-fg: #131410;
+    --color-muted: #d9e3e7;
+    --color-muted-fg: #7a9199;
+    --color-surface: #f5f7f8;
+    --color-surface-2: #eaf0f2;
+    --color-success: #22c55e;
+    --color-error: #ef4444;
+
+    --background: 0 0% 100%;
+    --foreground: 80 11% 7%;
+    --card: 200 18% 97%;
+    --card-foreground: 80 11% 7%;
+    --popover: 200 18% 97%;
+    --popover-foreground: 80 11% 7%;
+    --primary: 10 93% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 195 22% 93%;
+    --secondary-foreground: 80 11% 7%;
+    --muted: 195 22% 88%;
+    --muted-foreground: 195 13% 54%;
+    --accent: 195 22% 93%;
+    --accent-foreground: 80 11% 7%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 195 22% 88%;
+    --input: 195 22% 88%;
+    --ring: 10 93% 53%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --color-primary: #f63d19;
+    --color-bg: #0f1110;
+    --color-fg: #f0f4f5;
+    --color-muted: #1e2a2e;
+    --color-muted-fg: #5a7880;
+    --color-surface: #161c1a;
+    --color-surface-2: #1e2826;
+    --color-success: #22c55e;
+    --color-error: #ef4444;
+
+    --background: 150 6% 6%;
+    --foreground: 192 20% 95%;
+    --card: 150 12% 10%;
+    --card-foreground: 192 20% 95%;
+    --popover: 150 12% 10%;
+    --popover-foreground: 192 20% 95%;
+    --primary: 10 93% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 194 21% 15%;
+    --secondary-foreground: 192 20% 95%;
+    --muted: 194 21% 15%;
+    --muted-foreground: 193 18% 43%;
+    --accent: 165 14% 15%;
+    --accent-foreground: 192 20% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 194 21% 15%;
+    --input: 194 21% 15%;
+    --ring: 10 93% 53%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply transition-colors duration-200;
+  }
+
+  body {
+    @apply min-w-80 bg-bg font-sans text-fg antialiased;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: radial-gradient(circle, var(--color-muted) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .dark .bg-grid {
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-muted-fg) 28%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+}
