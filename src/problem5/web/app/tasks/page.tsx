@@ -1,12 +1,14 @@
+import { Suspense } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { TasksView } from './tasks-view';
 
-// Phase 5 shell. The header + theme toggle + "+ New task" affordance are in
-// place; the table, filters, and dialogs land in Phase 6/7. Keeping this as
-// a server component for now — the interactive parts (toggle, button) are
-// already client-bounded.
+// Server component shell. The interactive surface (filters, table, dialog)
+// lives in `tasks-view.tsx` so this file stays pure render and the client
+// boundary is explicit. The "+ New task" affordance still hangs off the
+// header — Phase 7 wires it to the form dialog.
 
 export default function TasksPage() {
   return (
@@ -29,15 +31,10 @@ export default function TasksPage() {
 
       <Separator />
 
-      <section
-        aria-label="Task list"
-        className="border-border/60 bg-card/40 flex flex-1 items-center justify-center rounded-lg border border-dashed p-12"
-      >
-        <p className="text-muted-foreground text-sm">
-          The task table arrives in Phase 6. The skeleton page renders so the
-          providers, theme toggle, and layout can be verified end-to-end.
-        </p>
-      </section>
+      {/* useSearchParams must be inside Suspense in the App Router. */}
+      <Suspense fallback={null}>
+        <TasksView />
+      </Suspense>
     </main>
   );
 }
