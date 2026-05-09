@@ -27,7 +27,7 @@ export function SwapArrow({ onClick, disabled = false }: SwapArrowProps) {
         variant="outline"
         aria-label="Swap direction"
         disabled={disabled}
-        className="size-10 shadow-sm rounded-full border-none border-muted bg-black dark:bg-white p-0 text-muted-fg transition-colors duration-200 hover:border-primary hover:bg-black/60 hover:dark:bg-gray-400 hover:text-primary [&_svg]:size-5"
+        className="size-10 shadow-sm rounded-full border-none border-muted bg-black dark:bg-white p-0 text-muted-fg transition-colors duration-200 hover:border-primary hover:bg-black/60 hover:dark:bg-gray-300 hover:text-primary [&_svg]:size-5"
       >
         <motion.button
           type="button"
