@@ -1,15 +1,22 @@
 import { PrismaClient } from '@prisma/client';
-import { isDev } from '../config/env.js';
+import { isDev, isTest } from '../config/env.js';
 import { logger } from './logger.js';
 
 // Single PrismaClient per process. Hot-reload protection in dev: Node ESM
 // caches module exports, but tsx watch creates fresh module graphs on reload,
 // so we don't need the `globalThis` trick that ts-node setups use.
+//
+// In `test` mode we silence Prisma's stdout: the suite intentionally exercises
+// `P2025` (record not found) on the not-found paths, and Prisma's pretty
+// error printer would otherwise pollute the test report with apparent errors
+// that are actually being handled.
 
 export const prisma = new PrismaClient({
   log: isDev
     ? [{ emit: 'event', level: 'query' }, 'warn', 'error']
-    : ['warn', 'error'],
+    : isTest
+      ? []
+      : ['warn', 'error'],
 });
 
 if (isDev) {
