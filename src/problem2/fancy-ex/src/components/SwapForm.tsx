@@ -41,17 +41,22 @@ export function SwapForm() {
       initial="hidden"
       animate="visible"
       onSubmit={onFormSubmit}
-      className="w-full max-w-md rounded-xl border border-muted bg-surface p-6 shadow-sm"
+      className="w-full max-w-md rounded-xl border border-muted bg-white dark:bg-surface p-4 md:p-6 shadow-sm"
     >
       <motion.div variants={sectionVariants} className="flex flex-col">
         <p className="font-sans font-semibold text-[10px] uppercase tracking-[2px] text-muted-fg">
           Currency Swap
         </p>
-        <h1 className="font-mono text-3xl text-fg">Swap<span className="font-semibold text-primary">.</span></h1>
+        <h1 className="font-mono text-3xl text-fg">
+          Swap<span className="font-semibold text-primary">.</span>
+        </h1>
       </motion.div>
 
       <div className="mt-6 flex flex-col gap-4">
-        <motion.section variants={sectionVariants} className="flex flex-col gap-3">
+        <motion.section
+          variants={sectionVariants}
+          className="grid grid-cols-2 gap-3 mb-2"
+        >
           <TokenSelector
             label="SEND"
             value={fromToken}
@@ -66,6 +71,7 @@ export function SwapForm() {
             disabled={isFormDisabled}
             error={formState.errors.fromAmount?.message}
             onChange={(value) => setFieldValue("fromAmount", value)}
+            className="min-h-12"
           />
         </motion.section>
 
@@ -73,7 +79,10 @@ export function SwapForm() {
           <SwapArrow onClick={handleFlip} disabled={isFormDisabled} />
         </motion.div>
 
-        <motion.section variants={sectionVariants} className="flex flex-col gap-3">
+        <motion.section
+          variants={sectionVariants}
+          className="flex flex-col gap-3"
+        >
           <TokenSelector
             label="RECEIVE"
             value={toToken}

@@ -29,6 +29,7 @@ export interface TokenSelectorProps {
   onChange: (token: Token) => void;
   disabled?: boolean;
   error?: string;
+  buttonClassName?: string;
 }
 
 export function TokenSelector({
@@ -38,6 +39,7 @@ export function TokenSelector({
   onChange,
   disabled = false,
   error,
+  buttonClassName,
 }: TokenSelectorProps) {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -59,7 +61,7 @@ export function TokenSelector({
     <div className="flex flex-col gap-2">
       <label
         id={labelId}
-        className="font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-fg"
+        className= "font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-fg"
       >
         {label}
       </label>
@@ -75,6 +77,7 @@ export function TokenSelector({
             className={cn(
               "h-12 w-full justify-between rounded-xl border-muted bg-surface px-3 text-fg hover:bg-surface-2 hover:text-fg",
               error && "border-error focus-visible:ring-error",
+              buttonClassName
             )}
           >
             {value ? (

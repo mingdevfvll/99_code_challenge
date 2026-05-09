@@ -18,6 +18,7 @@ export interface AmountInputProps {
   disabled?: boolean;
   error?: string;
   placeholder?: string;
+  className?: string;
 }
 
 export function AmountInput({
@@ -28,6 +29,7 @@ export function AmountInput({
   disabled = false,
   error,
   placeholder = "0.00",
+  className,
 }: AmountInputProps) {
   const id = useId();
   const hasError = Boolean(error);
@@ -51,9 +53,11 @@ export function AmountInput({
       <div
         data-invalid={hasError || undefined}
         className={cn(
-          "flex min-h-14 items-center rounded-xl border border-muted bg-surface px-3 transition-colors duration-150 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-          hasError && "border-error focus-within:border-error focus-within:ring-error/20",
+          "flex min-h-14 items-center rounded-xl border border-muted bg-surface px-3 transition-colors duration-150 focus-within:border-primary",
+          hasError &&
+            "border-error focus-within:border-error focus-within:ring-error/20",
           readOnly && "bg-surface-2",
+          className,
         )}
       >
         {readOnly ? (
@@ -63,7 +67,10 @@ export function AmountInput({
             aria-describedby={hasError ? errorId : undefined}
             className="w-full font-mono text-2xl text-fg"
           >
-            <NumberFlowOutput value={displayValue} format={NUMBER_FLOW_FORMAT} />
+            <NumberFlowOutput
+              value={displayValue}
+              format={NUMBER_FLOW_FORMAT}
+            />
           </div>
         ) : (
           <Input
@@ -76,7 +83,7 @@ export function AmountInput({
             onChange={handleChange}
             aria-invalid={hasError}
             aria-describedby={hasError ? errorId : undefined}
-            className="h-auto border-0 bg-transparent px-0 py-3 font-mono text-2xl text-fg shadow-none outline-none ring-offset-0 placeholder:text-muted-fg focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="h-auto border-0 bg-transparent px-0 py-3 font-mono text-fg shadow-none outline-none ring-offset-0 placeholder:text-muted-fg focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         )}
       </div>

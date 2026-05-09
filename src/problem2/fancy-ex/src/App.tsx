@@ -10,7 +10,7 @@ export default function App() {
 
   return (
     <main
-      className="bg-grid flex min-h-screen flex-col items-center justify-center bg-bg px-4 py-12"
+      className="bg-grid flex min-h-screen flex-col items-center justify-center bg-surface dark:bg-bg px-4 py-12"
       aria-label="Currency swap"
     >
       <ThemeToggle />
