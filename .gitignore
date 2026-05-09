@@ -1,4 +1,3 @@
-.DS_Store
 node_modules
 dist
 build
@@ -13,5 +12,48 @@ build
 .cursor
 .claude
 .next
+
+# Dependencies
+node_modules/
+
+# Vite
+dist/
+dist-ssr/
+.vite/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# NestJS
+.nest/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# PM2
+ecosystem.config.js.bak
+
+# Docker
+docker-compose.override.yml
 
 my-notes.md
