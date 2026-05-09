@@ -1,13 +1,14 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { TaskRow } from './task-row';
+import { TaskCard, TaskRow } from './task-row';
 import { EmptyState } from './empty-state';
 import { ErrorState } from './error-state';
-import type { Task } from '@/schemas/task';
+import type { Task, TaskStatus } from '@/schemas/task';
 
 // The table renders one of four states (`docs/05-frontend-design.md` §3-state UX):
 //   1. Initial loading      → skeleton rows that match real row height
@@ -30,6 +31,9 @@ type TaskTableProps = {
   onRetry: () => void;
   hasActiveFilters: boolean;
   onClearFilters: () => void;
+  onEdit: (task: Task) => void;
+  onDelete: (task: Task) => void;
+  onStatusChange: (task: Task, status: TaskStatus) => void;
 };
 
 export function TaskTable({
@@ -44,6 +48,9 @@ export function TaskTable({
   onRetry,
   hasActiveFilters,
   onClearFilters,
+  onEdit,
+  onDelete,
+  onStatusChange,
 }: TaskTableProps) {
   return (
     <section
@@ -54,7 +61,7 @@ export function TaskTable({
         <div className="from-primary/40 via-primary to-primary/40 absolute inset-x-0 top-0 h-0.5 animate-pulse bg-gradient-to-r" />
       ) : null}
 
-      <div className="overflow-x-auto">
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-border/60 text-muted-foreground border-b text-left text-xs uppercase tracking-wide">
@@ -67,11 +74,38 @@ export function TaskTable({
           </thead>
           <tbody>
             {isLoading ? <SkeletonRows /> : null}
-            {!isLoading && !isError && tasks.length > 0
-              ? tasks.map((t) => <TaskRow key={t.id} task={t} />)
-              : null}
+            {!isLoading && !isError && tasks.length > 0 ? (
+              <AnimatePresence initial={false}>
+                {tasks.map((t) => (
+                  <TaskRow
+                    key={t.id}
+                    task={t}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onStatusChange={onStatusChange}
+                  />
+                ))}
+              </AnimatePresence>
+            ) : null}
           </tbody>
         </table>
+      </div>
+
+      <div className="grid gap-3 p-3 md:hidden">
+        {isLoading ? <MobileSkeletonRows /> : null}
+        {!isLoading && !isError && tasks.length > 0 ? (
+          <AnimatePresence initial={false}>
+            {tasks.map((t) => (
+              <TaskCard
+                key={t.id}
+                task={t}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onStatusChange={onStatusChange}
+              />
+            ))}
+          </AnimatePresence>
+        ) : null}
       </div>
 
       {!isLoading && isError ? (
@@ -145,6 +179,25 @@ function SkeletonRows() {
             <Skeleton className="ml-auto h-7 w-7 rounded-md" />
           </td>
         </tr>
+      ))}
+    </>
+  );
+}
+
+function MobileSkeletonRows() {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="border-border/60 rounded-lg border p-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-3 w-full" />
+            <div className="flex gap-2 pt-2">
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-16 rounded-full" />
+            </div>
+          </div>
+        </div>
       ))}
     </>
   );
