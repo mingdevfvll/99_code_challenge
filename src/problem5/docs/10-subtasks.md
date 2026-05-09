@@ -230,32 +230,32 @@
 
 ### Hooks
 
-- [ ] `use-create-task.ts` — optimistic prepend
-- [ ] `use-update-task.ts` — optimistic patch in place
-- [ ] `use-delete-task.ts` — optimistic remove
+- [x] `use-create-task.ts` — optimistic prepend
+- [x] `use-update-task.ts` — optimistic patch in place
+- [x] `use-delete-task.ts` — optimistic remove
 
 ### Components
 
-- [ ] `task-form-dialog.tsx` — RHF + zodResolver, modes create + edit
-- [ ] Tag input (simple version per `05-frontend-design.md`)
-- [ ] `confirm-delete-dialog.tsx` — two-step
+- [x] `task-form-dialog.tsx` — RHF + zodResolver, modes create + edit
+- [x] Tag input (simple version per `05-frontend-design.md`)
+- [x] `confirm-delete-dialog.tsx` — two-step
 
 ### Wiring
 
-- [ ] "+ New task" → form dialog (create)
-- [ ] Row menu → Edit → form dialog (edit)
-- [ ] Row menu → Delete → confirm → delete
-- [ ] Inline status dropdown commits immediately
-- [ ] Toasts on success + error for each mutation
+- [x] "+ New task" → form dialog (create)
+- [x] Row menu → Edit → form dialog (edit)
+- [x] Row menu → Delete → confirm → delete
+- [x] Inline status dropdown commits immediately
+- [x] Toasts on success + error for each mutation
 
 ### Polish
 
-- [ ] framer-motion row enter/exit
-- [ ] Tab through every interactive element — focus rings preserved
-- [ ] Dialog focus trap works (Radix should handle)
-- [ ] aria-label on every icon-only button
-- [ ] Live region on toast container
-- [ ] Mobile breakpoint: cards instead of table, filter sheet
+- [x] framer-motion row enter/exit
+- [x] Tab through every interactive element — focus rings preserved
+- [x] Dialog focus trap works (Radix should handle)
+- [x] aria-label on every icon-only button
+- [x] Live region on toast container
+- [x] Mobile breakpoint: cards instead of table, filter sheet
 
 ## Phase 8 — Docs + Docker polish
 
