@@ -1,0 +1,44 @@
+// Problem 5 — Task domain.
+// Single table with two enums and a tag array.
+// Rationale for each field, index, and type lives in `docs/03-data-model.md`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  ARCHIVED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String       @db.VarChar(200)
+  description String?      @db.Text
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+  tags        String[]     @default([])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([status])
+  @@index([priority])
+  @@index([dueDate])
+  @@index([createdAt(sort: Desc)])
+  @@index([tags], type: Gin)
+}
