@@ -110,10 +110,11 @@ Build a currency swap form so users can exchange an amount from one asset/token 
 - Explore the Vite app under `src/problem2/fancy-ex/` (token icons, pricing hooks, form UX).
 - Optionally review other files under `src/problem2/` if your template references them.
 
+![Problem 2 — Fancy Form (screenshot)](docs/images/prob_2.png)
+
 <details>
 <summary>Original problem statement (expand)</summary>
 
-![Problem 2 — Fancy Form (screenshot)](docs/images/prob_2.png)
 
 ```markdown
 ## Problem 2: Fancy Form
@@ -158,10 +159,10 @@ Review a flawed React (TypeScript, hooks) snippet: list inefficiencies and anti-
 - Compare with `src/problem3/code-solution/` for the direct refactored code (`fixed_solution.tsx`, `note_code.tsx`).
 - Run or extend `src/problem3/wallet-app/` if you want to see the scenario as a small Next.js demo app.
 
+![Problem 3 — Messy React (screenshot)](docs/images/prob_3.png)
+
 <details>
 <summary>Original problem statement (expand)</summary>
-
-![Problem 3 — Messy React (screenshot)](docs/images/prob_3.png)
 
 ```markdown
 Problem 3: Messy React
