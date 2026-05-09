@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import { createHash } from 'node:crypto';
 import type { Task as PrismaTask } from '@prisma/client';
+import { getValidated } from '../../core/middleware/validate.js';
 import { taskService } from './task.service.js';
 import type {
   CreateTaskInput,
@@ -15,13 +16,13 @@ import type {
 
 export const taskController = {
   async create(req: Request, res: Response) {
-    const input = req.body as CreateTaskInput;
+    const input = getValidated<CreateTaskInput>(req, 'body');
     const task = await taskService.create(input);
     res.status(201).json({ data: toResponse(task) });
   },
 
   async list(req: Request, res: Response) {
-    const filters = req.query as unknown as ListTaskQuery;
+    const filters = getValidated<ListTaskQuery>(req, 'query');
     const { tasks, nextCursor } = await taskService.list(filters);
     res.status(200).json({
       data: tasks.map(toResponse),
@@ -30,7 +31,7 @@ export const taskController = {
   },
 
   async getById(req: Request, res: Response) {
-    const { id } = req.params as unknown as TaskIdParam;
+    const { id } = getValidated<TaskIdParam>(req, 'params');
     const task = await taskService.getById(id);
     const body = { data: toResponse(task) };
     const etag = `"${etagOf(body)}"`;
@@ -44,14 +45,14 @@ export const taskController = {
   },
 
   async update(req: Request, res: Response) {
-    const { id } = req.params as unknown as TaskIdParam;
-    const input = req.body as UpdateTaskInput;
+    const { id } = getValidated<TaskIdParam>(req, 'params');
+    const input = getValidated<UpdateTaskInput>(req, 'body');
     const task = await taskService.update(id, input);
     res.status(200).json({ data: toResponse(task) });
   },
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params as unknown as TaskIdParam;
+    const { id } = getValidated<TaskIdParam>(req, 'params');
     await taskService.delete(id);
     res.status(204).end();
   },
@@ -59,6 +60,9 @@ export const taskController = {
 
 // Explicit response shape. No `res.json(rowFromPrisma)` anywhere — see
 // `docs/13-security.md` ("Output discipline").
+//
+// Accepts string-typed dates as well as Date instances: cache hits come back
+// from JSON.parse with string timestamps, fresh DB rows have Date instances.
 function toResponse(t: PrismaTask) {
   return {
     id: t.id,
@@ -66,11 +70,16 @@ function toResponse(t: PrismaTask) {
     description: t.description,
     status: t.status,
     priority: t.priority,
-    dueDate: t.dueDate ? t.dueDate.toISOString() : null,
+    dueDate: toIso(t.dueDate),
     tags: t.tags,
-    createdAt: t.createdAt.toISOString(),
-    updatedAt: t.updatedAt.toISOString(),
+    createdAt: toIso(t.createdAt) as string,
+    updatedAt: toIso(t.updatedAt) as string,
   };
+}
+
+function toIso(v: Date | string | null): string | null {
+  if (v === null) return null;
+  return v instanceof Date ? v.toISOString() : new Date(v).toISOString();
 }
 
 function etagOf(body: unknown): string {

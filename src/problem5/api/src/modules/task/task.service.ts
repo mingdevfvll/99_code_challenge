@@ -32,7 +32,7 @@ export const taskService = {
     const key = itemCacheKey(id);
     const found = await cache.getOrSet(key, ITEM_TTL, () => taskRepository.findById(id));
     if (!found) throw new NotFoundError('Task not found');
-    return reviveDates(found);
+    return found;
   },
 
   async update(id: string, input: UpdateTaskInput): Promise<PrismaTask> {
@@ -54,15 +54,3 @@ export const taskService = {
     ]);
   },
 };
-
-// JSON.parse turns Date back into string. The controller's response mapper
-// formats output, but downstream code that touches `.getTime()` would break
-// on a cache hit otherwise.
-function reviveDates(t: PrismaTask): PrismaTask {
-  return {
-    ...t,
-    dueDate: t.dueDate ? new Date(t.dueDate) : null,
-    createdAt: new Date(t.createdAt),
-    updatedAt: new Date(t.updatedAt),
-  };
-}
