@@ -1,22 +1,56 @@
-# web — Next.js 15
+# web — Next.js 16
 
-Frontend for Problem 5. Next.js 15 App Router on React 19, shadcn/ui on Tailwind 3, TanStack Query for data, RHF + Zod for forms.
+Frontend for Problem 5. Next.js 16 (App Router) on React 19, shadcn/ui on
+Tailwind 4, TanStack Query for server state, RHF + Zod for forms.
 
-## Status
+> Plan and component breakdown live in `../docs/05-frontend-design.md`.
 
-Phase 1 scaffolding placeholder. The real Next.js project gets initialized in Phase 5 via:
+## Run it
 
 ```bash
-# from src/problem5/, with this folder removed first
-npx create-next-app@latest web \
-  --typescript --tailwind --eslint --app --no-src-dir \
-  --import-alias "@/*" --use-npm
+cp .env.example .env.local       # NEXT_PUBLIC_API_URL=http://localhost:4000
+npm install
+npm run dev                      # http://localhost:3000 → /tasks
 ```
 
-Then shadcn primitives + the dependencies listed in `../docs/09-tasks.md` (Phase 5).
+The dev server expects the API on `NEXT_PUBLIC_API_URL`. Start it from
+`../api/` first (`npm run dev`) — see `../README.md` for the full quickstart.
 
-## Why empty now
+## Scripts
 
-Bootstrapping Next.js with `create-next-app` writes ~30 generated files (config, lockfile, sample app). Committing those before the rest of the work just adds noise. This README and the `.gitignore` are the only files that exist in Phase 1.
+| Script | What it does |
+|---|---|
+| `npm run dev` | Next dev server (Turbopack). |
+| `npm run build` | Production build. |
+| `npm start` | Run the production build. |
+| `npm run lint` | ESLint via the Next config. |
 
-See `../docs/05-frontend-design.md` for the page composition that will live here.
+## Layout
+
+```
+app/
+├── layout.tsx          ← providers, fonts, toaster
+├── providers.tsx       ← ThemeProvider + QueryClientProvider + TooltipProvider
+├── page.tsx            ← redirects to /tasks
+└── tasks/
+    └── page.tsx        ← Phase 5 shell, Phase 6+ adds table + filters
+
+components/
+├── ui/                 ← shadcn primitives (button, dialog, input, …)
+└── theme-toggle.tsx
+
+lib/
+├── api-client.ts       ← typed fetch wrapper, ApiError, request id
+├── env.ts              ← NEXT_PUBLIC_* access with fail-fast guard
+├── format-date.ts      ← shared Intl.DateTimeFormat
+├── query-client.ts     ← QueryClient factory, retry/staleTime defaults
+└── utils.ts            ← shadcn cn() helper
+```
+
+## Notes
+
+- Versions came out slightly ahead of the original plan: Next 16 (vs. 15),
+  Tailwind 4 (vs. 3), React 19. Same architecture, no contract change.
+  Documented in `../docs/12-retrospective.md`.
+- `.env.local` is gitignored. `.env.example` is the source of truth for
+  what the app needs at boot.
