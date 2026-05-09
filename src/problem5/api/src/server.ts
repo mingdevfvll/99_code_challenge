@@ -12,6 +12,7 @@ import { notFound } from './core/middleware/not-found.js';
 import { errorHandler } from './core/middleware/error-handler.js';
 
 import { healthRoutes } from './modules/health/health.routes.js';
+import { taskRoutes } from './modules/task/task.routes.js';
 import { debugRoutes } from './modules/_debug/debug.routes.js';
 
 // createApp() is the testable factory. It wires middleware in the pinned
@@ -68,6 +69,7 @@ export function createApp(): Express {
 
   // Routes.
   app.use(healthRoutes);
+  app.use('/api/v1/tasks', taskRoutes);
 
   if (!isProd) {
     app.use(debugRoutes);
