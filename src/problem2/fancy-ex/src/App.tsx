@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <main
-      className="flex min-h-screen relative flex-col items-center justify-center bg-surface dark:bg-bg px-4 py-12"
+      className="flex min-h-screen overflow-hidden relative flex-col items-center justify-center bg-surface dark:bg-bg px-4 py-12"
       aria-label="Currency swap"
     >
       <ThemeToggle />
