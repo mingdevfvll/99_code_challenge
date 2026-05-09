@@ -51,8 +51,9 @@ export function SwapForm() {
       glowIntensity={1}
       coneSpread={25}
       animated={false}
-      colors={["#c084fc", "#f472b6", "#38bdf8"]}
+      colors={["#fc84c6", "#f63d19", "#fbda63"]}
       backgroundColor={backgroundColor}
+      className="!shadow-lg"
     >
       <motion.form
         variants={cardVariants}

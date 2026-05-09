@@ -13,8 +13,8 @@ export function DotFieldBackground() {
         cursorRadius={650}
         cursorForce={0.78}
         bulgeOnly
-        gradientFrom="#A855F7"
-        gradientTo="#B497CF"
+        gradientFrom="#8f8f8f"
+        gradientTo="#d8d8d8"
         glowColor="#000000"
       />
     </div>

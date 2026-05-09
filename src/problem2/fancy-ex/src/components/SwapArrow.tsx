@@ -34,6 +34,7 @@ export function SwapArrow({ onClick, disabled = false }: SwapArrowProps) {
           disabled={disabled}
           onClick={handleClick}
           animate={{ rotate }}
+          whileHover={disabled ? undefined : { y: -2 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <ArrowUpDown
