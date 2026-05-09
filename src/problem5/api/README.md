@@ -2,9 +2,12 @@
 
 Backend for Problem 5. Express 5 on TypeScript, Prisma over Postgres, Redis for cache and rate limit.
 
-## Status
+## What is here
 
-Phase 1 scaffolding. Source tree empty beyond Prisma schema; Phases 2–4 fill in the layers per `../docs/09-tasks.md`.
+- `src/server.ts` wires middleware, routes, OpenAPI docs, and error handling.
+- `src/modules/task/` contains route/controller/service/repository/schema files.
+- `src/core/` contains environment parsing, Prisma/Redis clients, logging, OpenAPI registry, and middleware.
+- `prisma/` contains the Task schema, migrations, and idempotent seed script.
 
 ## Run (local, against docker compose backends)
 
@@ -21,6 +24,17 @@ npm run dev
 ```
 
 Then `curl http://localhost:4000/healthz`.
+
+## Run (Docker)
+
+From `src/problem5/`:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+The API image runs `prisma migrate deploy` and `prisma db seed` before starting `node dist/index.js`.
 
 ## Scripts
 
@@ -41,3 +55,14 @@ Then `curl http://localhost:4000/healthz`.
 | `npm run db:studio` | Open Prisma Studio |
 
 See `../docs/08-runbook.md` for troubleshooting.
+
+## HTTP surfaces
+
+| Path | Purpose |
+|---|---|
+| `/healthz` | Liveness |
+| `/readyz` | Postgres + Redis readiness |
+| `/docs` | Swagger UI |
+| `/openapi.json` | OpenAPI document |
+| `/api/v1/tasks` | Task list/create |
+| `/api/v1/tasks/:id` | Task read/update/delete |

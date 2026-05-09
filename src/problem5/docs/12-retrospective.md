@@ -2,7 +2,7 @@
 
 > Two passes. The first is written before code is shipped, listing what I expect to be true. The second will be written after, with the actuals.
 >
-> Status of this file right now: **pre-build draft**. Everything below is prediction. The "Actuals" section is empty until Phase 8.
+> Status of this file right now: **actuals filled after Phase 8 Docker polish**. The prediction section is left as written.
 
 ## Pre-build draft (2026-05-09)
 
@@ -95,9 +95,9 @@ These are the patterns I keep falling into and have been deliberately avoiding h
 
 ---
 
-## Actuals (to be filled in after Phase 8)
+## Actuals (filled after Phase 8)
 
-This section is empty until I finish the build. Predictions above will be left as written, not edited; this section will say what actually happened.
+Predictions above are left as written; this section records what happened.
 
 ### Time spent
 
@@ -109,22 +109,32 @@ This section is empty until I finish the build. Predictions above will be left a
 | 4 | 2.0h | — | |
 | 5 | 2.0h | — | |
 | 6 | 2.5h | — | |
-| 7 | 2.0h | — | |
-| 8 | 1.5h | — | |
-| **Total** | **17.0h** | — | |
+| 7 | 2.0h | ~2.5h | CRUD wiring was straightforward; browser smoke found a keyboard issue in the inline status menu. |
+| 8 | 1.5h | ~2.0h | Dockerfiles, compose healthchecks, README pass, and cold-build verification. |
+| **Total** | **17.0h** | ~18h | Slightly over plan, mostly in frontend polish and Docker verification. |
 
 ### What got cut
 
-(filled in after build)
+- Combobox-style tag input. The shipped version is a simple comma/Enter tag input.
+- A dedicated task detail route. The edit dialog covers the needed workflow.
+- Frontend e2e test files. I did a browser-driven smoke pass instead and documented that as the intended cutoff.
+- CI. The repo does not have a root CI pattern, and adding one only for Problem 5 felt like more ceremony than signal.
 
 ### What surprised me
 
-(filled in after build)
+- The Base UI dropdown trigger used for inline status looked fine visually but failed the keyboard/browser smoke path. I replaced it with a native select. Less fancy, more reliable.
+- Moving the API container to self-run migrations and seed meant `prisma` and `tsx` had to be runtime dependencies, not only dev dependencies.
+- Next standalone output was low-friction once `output: 'standalone'` was enabled.
 
 ### What I'd change about this plan
 
-(filled in after build)
+- Add a small frontend smoke script earlier, before Phase 7 is "done". It would have caught the status menu issue immediately.
+- Move Docker work one phase earlier. Waiting until the end makes any image/runtime mismatch feel riskier than it needs to.
+- Keep the status control native from the start. For a CRUD admin surface, reliable keyboard behavior matters more than a custom dropdown.
 
 ### What the predictions got right and wrong
 
-(filled in after build)
+- Right: Phase 7 ran over, and polish was the riskiest visible area.
+- Right: Docker cold start needed explicit healthcheck timing and service ordering.
+- Wrong: OpenAPI multi-value query params did not become the biggest issue. The generated docs were good enough for this scope.
+- Wrong: Express 5 typing was less painful than expected once validation and handlers were kept narrow.

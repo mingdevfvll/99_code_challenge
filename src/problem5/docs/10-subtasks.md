@@ -261,27 +261,27 @@
 
 ### Docker
 
-- [ ] `api/Dockerfile` — multi-stage, ~150MB target
-- [ ] `web/Dockerfile` — multi-stage with `output: 'standalone'`
-- [ ] Add `api` and `web` services to compose with healthchecks
-- [ ] `depends_on` with `condition: service_healthy`
-- [ ] Test cold rebuild: `docker compose down -v && docker compose up --build`
+- [x] `api/Dockerfile` — multi-stage, ~150MB target
+- [x] `web/Dockerfile` — multi-stage with `output: 'standalone'`
+- [x] Add `api` and `web` services to compose with healthchecks
+- [x] `depends_on` with `condition: service_healthy`
+- [x] Test cold rebuild: `docker compose down -v && docker compose up --build`
 
 ### Docs
 
-- [ ] `src/problem5/README.md` — quickstart + link to `docs/00-implementation-plan.md`
-- [ ] `api/README.md`
-- [ ] `web/README.md`
-- [ ] `12-retrospective.md` — fill in actuals
-- [ ] Update root `99_code_challenge/readme.md` with the Problem 5 entry
+- [x] `src/problem5/README.md` — quickstart + link to `docs/00-implementation-plan.md`
+- [x] `api/README.md`
+- [x] `web/README.md`
+- [x] `12-retrospective.md` — fill in actuals
+- [x] Update root `99_code_challenge/readme.md` with the Problem 5 entry
 
 ### Final acceptance (per §17 of plan)
 
-- [ ] All four containers healthy ≤30s
-- [ ] `/tasks` page renders seed data
-- [ ] `/docs` renders all endpoints
-- [ ] Create / edit / status-change / delete from UI
-- [ ] All curl commands from `04-api-spec.md` work
-- [ ] `npm run test` passes in `api/`
-- [ ] `npm run typecheck` and `npm run lint` pass in both packages
-- [ ] Reading `00-implementation-plan.md` + `12-retrospective.md` gives the full picture
+- [x] All four containers healthy ≤30s
+- [x] `/tasks` page renders seed data
+- [x] `/docs` renders all endpoints
+- [x] Create / edit / status-change / delete from UI
+- [x] All curl commands from `04-api-spec.md` work
+- [x] `npm run test` passes in `api/`
+- [x] `npm run typecheck` and `npm run lint` pass in both packages
+- [x] Reading `00-implementation-plan.md` + `12-retrospective.md` gives the full picture

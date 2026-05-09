@@ -16,6 +16,17 @@ npm run dev                      # http://localhost:3000 → /tasks
 The dev server expects the API on `NEXT_PUBLIC_API_URL`. Start it from
 `../api/` first (`npm run dev`) — see `../README.md` for the full quickstart.
 
+## Run with Docker
+
+From `src/problem5/`:
+
+```bash
+cp .env.example .env
+docker compose up --build web
+```
+
+The Docker image uses Next standalone output and serves `/tasks` on port 3000.
+
 ## Scripts
 
 | Script | What it does |
@@ -33,10 +44,16 @@ app/
 ├── providers.tsx       ← ThemeProvider + QueryClientProvider + TooltipProvider
 ├── page.tsx            ← redirects to /tasks
 └── tasks/
-    └── page.tsx        ← Phase 5 shell, Phase 6+ adds table + filters
+    ├── page.tsx        ← server shell
+    └── tasks-view.tsx  ← client state, filters, mutations, dialogs
 
 components/
 ├── ui/                 ← shadcn primitives (button, dialog, input, …)
+├── task-form-dialog.tsx
+├── confirm-delete-dialog.tsx
+├── task-table.tsx
+├── task-row.tsx
+├── task-filters-bar.tsx
 └── theme-toggle.tsx
 
 lib/
@@ -54,3 +71,6 @@ lib/
   Documented in `../docs/12-retrospective.md`.
 - `.env.local` is gitignored. `.env.example` is the source of truth for
   what the app needs at boot.
+- Inline status changes use a native select instead of a custom menu. It is
+  less decorative, but keyboard behavior and browser smoke tests are more
+  reliable.
