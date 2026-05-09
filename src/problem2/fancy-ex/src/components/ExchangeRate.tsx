@@ -30,7 +30,7 @@ function ExchangeRateContent({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="font-mono text-xs text-muted-fg"
+      className="text-xs text-muted-fg"
       aria-live="polite"
       aria-atomic="true"
       aria-label={`1 ${fromToken.symbol} = ${rate} ${toToken.symbol}`}

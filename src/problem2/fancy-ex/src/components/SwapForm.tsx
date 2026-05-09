@@ -100,7 +100,7 @@ export function SwapForm() {
 
           <motion.section
             variants={sectionVariants}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-2"
           >
             <TokenSelector
               label="RECEIVE"
