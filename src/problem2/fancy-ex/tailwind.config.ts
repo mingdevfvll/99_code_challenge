@@ -53,6 +53,17 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        "loader-cube-spin": {
+          "0%": { transform: "rotateY(0deg) rotateX(0deg)" },
+          "80%": { transform: "rotateY(360deg) rotateX(360deg)" },
+          "100%": { transform: "rotateY(360deg) rotateX(360deg)" },
+        },
+      },
+      animation: {
+        "loader-cube":
+          "loader-cube-spin 4s ease-in-out 0.5s infinite",
+      },
     },
   },
   plugins: [tailwindcssAnimate],
