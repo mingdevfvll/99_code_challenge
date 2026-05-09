@@ -23,7 +23,7 @@ export function ThemeToggle() {
       size="icon"
       aria-label={label}
       title={label}
-      className="fixed right-4 top-4 size-9 rounded-lg border-muted bg-surface text-fg transition-colors duration-200 hover:border-primary hover:bg-surface-2 hover:text-primary [&_svg]:size-4"
+      className="fixed z-10 right-4 top-4 size-9 rounded-lg border-muted bg-surface text-fg transition-colors duration-200 hover:border-primary hover:bg-surface-2 hover:text-primary [&_svg]:size-4"
     >
       <motion.button
         type="button"

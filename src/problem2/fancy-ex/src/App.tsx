@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 import { AsciiLogo } from "@/components/AsciiLogo";
+import { DotFieldBackground } from "@/components/DotFieldBackground";
 import { SwapForm } from "@/components/SwapForm";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -10,14 +11,15 @@ export default function App() {
 
   return (
     <main
-      className="bg-grid flex min-h-screen flex-col items-center justify-center bg-surface dark:bg-bg px-4 py-12"
+      className="flex min-h-screen relative flex-col items-center justify-center bg-surface dark:bg-bg px-4 py-12"
       aria-label="Currency swap"
     >
       <ThemeToggle />
-      <div className="flex w-full max-w-md flex-col items-center gap-6">
+      <div className="flex w-full max-w-md flex-col items-center gap-6 relative z-10">
         <AsciiLogo onComplete={() => setCardReady(true)} />
         <AnimatePresence>{cardReady && <SwapForm />}</AnimatePresence>
       </div>
+      <DotFieldBackground />
     </main>
   );
 }
