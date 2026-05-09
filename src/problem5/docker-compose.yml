@@ -35,10 +35,66 @@ services:
       retries: 10
       start_period: 5s
 
-  # api and web services are added in Phase 8 (Docker polish).
-  # For Phases 1–7, run them locally against the postgres + redis above:
-  #   cd api && npm run dev
-  #   cd web && npm run dev
+  api:
+    build:
+      context: ./api
+    container_name: problem5-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      API_PORT: ${API_PORT:-4000}
+      NODE_ENV: ${NODE_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/tasks}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
+      RATE_LIMIT_GLOBAL: ${RATE_LIMIT_GLOBAL:-100}
+      RATE_LIMIT_MUTATIONS: ${RATE_LIMIT_MUTATIONS:-30}
+    ports:
+      - "${API_PORT:-4000}:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:4000/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    container_name: problem5-web
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:3000/tasks').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
 
 volumes:
   postgres-data:
