@@ -14,6 +14,7 @@ import { errorHandler } from './core/middleware/error-handler.js';
 import { healthRoutes } from './modules/health/health.routes.js';
 import { taskRoutes } from './modules/task/task.routes.js';
 import { debugRoutes } from './modules/_debug/debug.routes.js';
+import { docsRoutes } from './core/openapi/docs.routes.js';
 
 // createApp() is the testable factory. It wires middleware in the pinned
 // order from `docs/02-architecture.md` and returns the Express app without
@@ -69,6 +70,7 @@ export function createApp(): Express {
 
   // Routes.
   app.use(healthRoutes);
+  app.use(docsRoutes);
   app.use('/api/v1/tasks', taskRoutes);
 
   if (!isProd) {
