@@ -3,6 +3,8 @@
 .env.local
 .env.*.local
 !.env.example
+# .env.test is checked in: test stack uses fixed local ports + dummy creds.
+!.env.test
 
 # Dependencies
 node_modules/

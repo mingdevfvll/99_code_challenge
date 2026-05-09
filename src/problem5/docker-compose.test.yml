@@ -1,0 +1,40 @@
+name: problem5-test
+
+# Separate stack for the test suite so it never touches dev data.
+# Both services use tmpfs storage — wiped on container stop, and faster than
+# disk fsync on every transaction. Different host ports than the dev stack
+# so both can run side by side.
+
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: problem5-postgres-test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks_test
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tasks_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+      start_period: 5s
+
+  redis-test:
+    image: redis:7-alpine
+    container_name: problem5-redis-test
+    ports:
+      - "6380:6379"
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+      start_period: 2s
