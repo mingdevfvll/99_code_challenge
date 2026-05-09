@@ -1,9 +1,17 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Search, X } from 'lucide-react';
+import { Check, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -90,22 +98,117 @@ export function TaskFiltersBar({ filters, setFilters, clearFilters, hasActiveFil
   const setSort = (sort: TaskSort | undefined) => {
     setFilters((prev) => ({ ...prev, sort }));
   };
+  const activeCount =
+    (filters.status?.length ?? 0) +
+    (filters.priority?.length ?? 0) +
+    (filters.q ? 1 : 0) +
+    (filters.tags?.length ? 1 : 0) +
+    (filters.sort ? 1 : 0);
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative min-w-[220px] flex-1">
-          <Search className="text-muted-foreground pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-          <Input
-            type="search"
-            placeholder="Search title or description…"
-            value={qLocal}
-            onChange={(e) => setQLocal(e.target.value)}
-            aria-label="Search tasks"
-            className="pl-9"
-          />
-        </div>
+      <div className="hidden flex-wrap items-center gap-2 md:flex">
+        <FilterControls
+          qLocal={qLocal}
+          setQLocal={setQLocal}
+          filters={filters}
+          setFilters={setFilters}
+          clearFilters={clearFilters}
+          hasActiveFilters={hasActiveFilters}
+          toggleStatus={toggleStatus}
+          togglePriority={togglePriority}
+          setSort={setSort}
+        />
+      </div>
 
+      <div className="flex items-center gap-2 md:hidden">
+        <Sheet>
+          <SheetTrigger
+            render={
+              <Button variant="outline" size="sm" className="flex-1 gap-1.5">
+                <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+                Filters
+                {activeCount > 0 ? (
+                  <span className="bg-primary/10 text-primary rounded px-1.5 py-0.5 text-[11px] font-medium">
+                    {activeCount}
+                  </span>
+                ) : null}
+              </Button>
+            }
+          />
+          <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto rounded-t-xl">
+            <SheetHeader>
+              <SheetTitle>Filters</SheetTitle>
+              <SheetDescription>Search, filter, and sort tasks.</SheetDescription>
+            </SheetHeader>
+            <div className="grid gap-3 px-4 pb-4">
+              <FilterControls
+                qLocal={qLocal}
+                setQLocal={setQLocal}
+                filters={filters}
+                setFilters={setFilters}
+                clearFilters={clearFilters}
+                hasActiveFilters={hasActiveFilters}
+                toggleStatus={toggleStatus}
+                togglePriority={togglePriority}
+                setSort={setSort}
+                mobile
+              />
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        {hasActiveFilters ? (
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1.5">
+            <X className="h-3.5 w-3.5" />
+            Clear
+          </Button>
+        ) : null}
+      </div>
+
+      <ActiveFilterChips filters={filters} setFilters={setFilters} />
+    </div>
+  );
+}
+
+function FilterControls({
+  qLocal,
+  setQLocal,
+  filters,
+  setFilters,
+  clearFilters,
+  hasActiveFilters,
+  toggleStatus,
+  togglePriority,
+  setSort,
+  mobile = false,
+}: {
+  qLocal: string;
+  setQLocal: (value: string) => void;
+  filters: TaskFilters;
+  setFilters: Props['setFilters'];
+  clearFilters: () => void;
+  hasActiveFilters: boolean;
+  toggleStatus: (status: TaskStatus) => void;
+  togglePriority: (priority: TaskPriority) => void;
+  setSort: (sort: TaskSort | undefined) => void;
+  mobile?: boolean;
+}) {
+  return (
+    <>
+      <div className={cn('relative', mobile ? 'w-full' : 'min-w-[220px] flex-1')}>
+        <Search className="text-muted-foreground pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+        <Input
+          type="search"
+          placeholder="Search title or description…"
+          value={qLocal}
+          onChange={(e) => setQLocal(e.target.value)}
+          aria-label="Search tasks"
+          className="pl-9"
+        />
+      </div>
+
+      <div className={cn(mobile ? 'grid grid-cols-2 gap-2' : 'flex flex-wrap items-center gap-2')}>
         <FilterDropdown
           label="Status"
           activeCount={filters.status?.length ?? 0}
@@ -127,15 +230,18 @@ export function TaskFiltersBar({ filters, setFilters, clearFilters, hasActiveFil
         <SortDropdown sort={filters.sort} onSelect={setSort} />
 
         {hasActiveFilters ? (
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="ml-auto gap-1.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className={cn('gap-1.5', mobile && 'col-span-2', !mobile && 'ml-auto')}
+          >
             <X className="h-3.5 w-3.5" />
             Clear all
           </Button>
         ) : null}
       </div>
-
-      <ActiveFilterChips filters={filters} setFilters={setFilters} />
-    </div>
+    </>
   );
 }
 
