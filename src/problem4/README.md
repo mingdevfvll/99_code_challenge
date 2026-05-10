@@ -72,7 +72,7 @@ This specification follows the **Signed One-Time Token** pattern to validate sco
 
 ## Architecture
 
-![Architecture — scoreboard service (component flow)](../../../docs/images/prob_6.png)
+![Architecture — scoreboard service (component flow)](https://raw.githubusercontent.com/mingdevfvll/99_code_challenge/refs/heads/main/docs/images/prob_6.png)
 
 ### Component Overview
 
