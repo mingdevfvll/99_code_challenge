@@ -1,6 +1,6 @@
 # Implementation Plan — Problem 5: A Crude Server
 
-> Author: Ming Hailstone
+> Author: Ming
 > Date: 2026-05-09
 > Status: Draft, pre-implementation
 >
