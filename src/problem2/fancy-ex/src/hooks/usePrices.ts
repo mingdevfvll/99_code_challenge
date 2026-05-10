@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
+import { PRICES_URL } from "@/lib/apis/interview-price-api";
 import type { Token, TokenPrice } from "@/types";
-
-const PRICES_URL = "https://interview.switcheo.com/prices.json";
 
 /** Loose row shape from the wire before filtering invalid prices */
 const pricesJsonRowSchema = z.object({
