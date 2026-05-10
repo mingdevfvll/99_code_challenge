@@ -14,7 +14,7 @@ We're cool as long as we can view your solution without any pain.
 
 ## Repository overview
 
-This repository collects four independent coding exercises. Each lives under `src/` in its own folder. Dependencies and scripts are **per problem** (there is no single root `package.json`); open the README inside each problem folder for install and run commands.
+This repository collects independent coding exercises. Each lives under `src/` in its own folder. Dependencies and scripts are **per problem** (there is no single root `package.json`); open the README inside each problem folder for install and run commands.
 
 **How to navigate**
 
@@ -50,8 +50,15 @@ This repository collects four independent coding exercises. Each lives under `sr
     │       ├── package.json
     │       └── …
     │
-    └── problem4/                  ← Problem 6: backend architecture spec (README + diagram)
-        └── README.md              ← Scoreboard module specification, flow diagram, API notes
+    ├── problem4/                  ← Problem 6: backend architecture spec (README + diagram)
+    │   └── README.md              ← Scoreboard module specification, flow diagram, API notes
+    │
+    └── problem5/                  ← Crude Server: Express API + Next.js task UI
+        ├── README.md              ← Docker quickstart and reviewer map
+        ├── api/                   ← Express 5 + Prisma + Redis
+        ├── web/                   ← Next.js 16 task manager UI
+        ├── docs/                  ← Architecture, API spec, runbook, retrospective
+        └── docker-compose.yml
 ```
 
 ---
@@ -99,6 +106,21 @@ var sum_to_n_c = function(n) {
 ```
 
 </details>
+
+---
+
+### Problem 5 — Crude Server
+
+**Brief**
+
+Build a simple server exposing CRUD operations for a resource, then make it easy to run and review. This solution implements a Task resource with an Express/Prisma API, Redis-backed caching/rate limiting, OpenAPI docs, and a Next.js admin UI.
+
+**What to do**
+
+- Open `src/problem5/README.md`.
+- Run `cp .env.example .env && docker compose up --build` from `src/problem5/`.
+- Visit `http://localhost:3000/tasks` for the UI and `http://localhost:4000/docs` for the API reference.
+- Read `src/problem5/docs/00-implementation-plan.md` and `src/problem5/docs/12-retrospective.md` for the implementation story.
 
 ---
 
