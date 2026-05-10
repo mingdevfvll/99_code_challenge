@@ -14,13 +14,14 @@ We're cool as long as we can view your solution without any pain.
 
 ## Repository overview
 
-This repository collects independent coding exercises. Each lives under `src/` in its own folder. Dependencies and scripts are **per problem** (there is no single root app package); open the README inside each problem folder for install and run commands.
+This repository collects independent coding exercises. Each lives under `src/` in its own folder. Dependencies and scripts are **per problem** (there is no single root `package.json`); open the README inside each problem folder for install and run commands.
 
 **How to navigate**
 
 1. Skim the folder diagram below to see where solutions live.
 2. Open the matching section under [Problems](#problems) for the brief and **what to do** checklist.
 3. Follow the nested `README.md` (or `Solution.md` for Problem 3) in that folder for detailed structure and verification steps.
+4. For **Problem 6 (Architecture)**, the full specification and diagram live in `src/problem4/README.md` (the folder is named `problem4`; the brief in that file is Problem 6).
 
 ### Folder layout and roles
 
@@ -48,6 +49,9 @@ This repository collects independent coding exercises. Each lives under `src/` i
     │   └── wallet-app/            ← Next.js demo illustrating the improved UX
     │       ├── package.json
     │       └── …
+    │
+    ├── problem4/                  ← Problem 6: backend architecture spec (README + diagram)
+    │   └── README.md              ← Scoreboard module specification, flow diagram, API notes
     │
     └── problem5/                  ← Crude Server: Express API + Next.js task UI
         ├── README.md              ← Docker quickstart and reviewer map
@@ -197,6 +201,47 @@ List out the computational inefficiencies and anti-patterns found in the code bl
     2. Functional components.
     3. React Hooks
 2. You should also provide a refactored version of the code, but more points are awarded to accurately stating the issues and explaining correctly how to improve them.
+```
+
+</details>
+
+---
+
+### Problem 6 — Architecture (live scoreboard module)
+
+**Brief**
+
+Produce a written specification for a backend API module that powers a **top-10** scoreboard with **live updates**, accepts score changes only after **authorized** user actions, and **prevents** clients from inflating scores without going through the proper flow.
+
+**What to do**
+
+- Open **`src/problem4/README.md`**. That file is the canonical Problem 6 submission: task checklist, full module spec, execution-flow diagram (see `docs/images/prob_6.png`), API and WebSocket sketches, security model, and a section on improvements for the implementing team.
+- **Folder note:** the repository path is `src/problem4/`, but the challenge heading inside that README is **Problem 6** — use that README as your single source of truth for this exercise.
+
+![Problem 6 — Scoreboard service architecture (diagram)](docs/images/prob_6.png)
+
+<details>
+<summary>Original problem statement (expand)</summary>
+
+```markdown
+## Problem 6: Architecture
+
+### Task
+
+Write the specification for a software module on the API service (backend application server).
+
+1. Create a documentation for this module on a `README.md` file.
+2. Create a diagram to illustrate the flow of execution.
+3. Add additional comments for improvement you may have in the documentation.
+4. Your specification will be given to a backend engineering team to implement.
+
+### Software Requirements
+
+1. We have a website with a score board, which shows the top 10 user's scores.
+2. We want live update of the score board.
+3. User can do an action (which we do not need to care what the action is), completing this action will increase the user's score.
+4. Upon completion the action will dispatch an API call to the application server to update the score.
+5. We want to prevent malicious users from increasing scores without authorisation.
 ```
 
 </details>
