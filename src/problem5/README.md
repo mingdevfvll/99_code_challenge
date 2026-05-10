@@ -25,7 +25,7 @@ Then:
 ```
 src/problem5/
 ├── api/           Express + Prisma backend
-├── web/           Next.js 15 admin UI
+├── web/           Next.js 16 admin UI
 ├── docs/          14 documents — read docs/00-implementation-plan.md first
 ├── docker-compose.yml
 ├── docker-compose.test.yml

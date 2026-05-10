@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-npx prisma migrate deploy
-npx tsx prisma/seed.ts
+./node_modules/.bin/prisma migrate deploy
+node dist/prisma/seed.js
 
 exec node dist/index.js

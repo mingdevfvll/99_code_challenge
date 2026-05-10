@@ -23,7 +23,10 @@ That's the whole runbook for the happy path.
 
 ## Environment variables
 
-`.env.example` documents every variable and its default. The ones that matter:
+`.env.example` documents every variable required by Docker Compose. The compose
+files intentionally do not define fallback values; copy `.env.example` to `.env`
+first so a missing value fails at startup instead of silently changing behavior.
+The ones that matter:
 
 | Var | Default | Where used | Notes |
 |---|---|---|---|
@@ -31,6 +34,8 @@ That's the whole runbook for the happy path.
 | `REDIS_URL` | `redis://redis:6379` | api | ioredis. |
 | `API_PORT` | `4000` | api | |
 | `WEB_PORT` | `3000` | web | |
+| `PORT` | `3000` | web | Container port consumed by Next standalone. |
+| `HOSTNAME` | `0.0.0.0` | web | Bind address consumed by Next standalone. |
 | `WEB_ORIGIN` | `http://localhost:3000` | api | CORS allowlist. Comma-separate for multiple. |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | web | Browser-side fetches. |
 | `LOG_LEVEL` | `info` | api | `debug` for verbose. |
@@ -49,6 +54,10 @@ docker compose up --build
 ```
 
 First run takes ~60s (image pulls + builds). Subsequent runs ~10s.
+
+Compose reads runtime configuration from `.env`. Do not add secrets or per-machine
+values directly to `docker-compose.yml`; put them in `.env` and keep only safe
+examples in `.env.example`.
 
 To rebuild after dependency changes:
 

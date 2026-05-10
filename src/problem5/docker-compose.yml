@@ -3,18 +3,17 @@ name: problem5
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: problem5-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-tasks}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required in .env}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required in .env}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:?POSTGRES_PORT is required in .env}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-tasks}"]
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -22,10 +21,9 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: problem5-redis
     restart: unless-stopped
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "${REDIS_PORT:?REDIS_PORT is required in .env}:6379"
     volumes:
       - redis-data:/data
     healthcheck:
@@ -38,21 +36,19 @@ services:
   api:
     build:
       context: ./api
-    container_name: problem5-api
+    init: true
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
-      API_PORT: ${API_PORT:-4000}
-      NODE_ENV: ${NODE_ENV:-production}
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/tasks}
-      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
-      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
-      RATE_LIMIT_GLOBAL: ${RATE_LIMIT_GLOBAL:-100}
-      RATE_LIMIT_MUTATIONS: ${RATE_LIMIT_MUTATIONS:-30}
+      API_PORT: ${API_PORT:?API_PORT is required in .env}
+      NODE_ENV: ${NODE_ENV:?NODE_ENV is required in .env}
+      LOG_LEVEL: ${LOG_LEVEL:?LOG_LEVEL is required in .env}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required in .env}
+      REDIS_URL: ${REDIS_URL:?REDIS_URL is required in .env}
+      WEB_ORIGIN: ${WEB_ORIGIN:?WEB_ORIGIN is required in .env}
+      RATE_LIMIT_GLOBAL: ${RATE_LIMIT_GLOBAL:?RATE_LIMIT_GLOBAL is required in .env}
+      RATE_LIMIT_MUTATIONS: ${RATE_LIMIT_MUTATIONS:?RATE_LIMIT_MUTATIONS is required in .env}
     ports:
-      - "${API_PORT:-4000}:4000"
+      - "${API_PORT:?API_PORT is required in .env}:${API_PORT:?API_PORT is required in .env}"
     depends_on:
       postgres:
         condition: service_healthy
@@ -62,7 +58,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "node -e \"fetch('http://127.0.0.1:4000/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
+          "node -e \"fetch('http://127.0.0.1:' + process.env.API_PORT + '/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
         ]
       interval: 5s
       timeout: 3s
@@ -73,15 +69,16 @@ services:
     build:
       context: ./web
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
-    container_name: problem5-web
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL is required in .env}
+    init: true
     restart: unless-stopped
     environment:
-      PORT: 3000
-      HOSTNAME: 0.0.0.0
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+      NODE_ENV: ${NODE_ENV:?NODE_ENV is required in .env}
+      PORT: ${PORT:?PORT is required in .env}
+      HOSTNAME: ${HOSTNAME:?HOSTNAME is required in .env}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL is required in .env}
     ports:
-      - "${WEB_PORT:-3000}:3000"
+      - "${WEB_PORT:?WEB_PORT is required in .env}:${PORT:?PORT is required in .env}"
     depends_on:
       api:
         condition: service_healthy
@@ -89,7 +86,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "node -e \"fetch('http://127.0.0.1:3000/tasks').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
+          "node -e \"fetch('http://127.0.0.1:' + process.env.PORT + '/tasks').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
         ]
       interval: 5s
       timeout: 3s
