@@ -16,8 +16,14 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
 import {
   taskPriorityEnum,
   taskStatusEnum,
@@ -157,24 +163,60 @@ export function TaskFormDialog({
           <div className="grid gap-4 sm:grid-cols-3">
             <Field>
               <Label htmlFor="task-status">Status</Label>
-              <NativeSelect id="task-status" {...form.register('status')}>
-                {taskStatusEnum.options.map((status) => (
-                  <option key={status} value={status}>
-                    {STATUS_LABELS[status]}
-                  </option>
-                ))}
-              </NativeSelect>
+              <Controller
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={(value) => field.onChange(value as TaskStatus)}
+                    items={taskStatusEnum.options.map((status) => ({
+                      value: status,
+                      label: STATUS_LABELS[status],
+                    }))}
+                  >
+                    <SelectTrigger id="task-status" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent align="start">
+                      {taskStatusEnum.options.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {STATUS_LABELS[status]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </Field>
 
             <Field>
               <Label htmlFor="task-priority">Priority</Label>
-              <NativeSelect id="task-priority" {...form.register('priority')}>
-                {taskPriorityEnum.options.map((priority) => (
-                  <option key={priority} value={priority}>
-                    {PRIORITY_LABELS[priority]}
-                  </option>
-                ))}
-              </NativeSelect>
+              <Controller
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={(value) => field.onChange(value as TaskPriority)}
+                    items={taskPriorityEnum.options.map((priority) => ({
+                      value: priority,
+                      label: PRIORITY_LABELS[priority],
+                    }))}
+                  >
+                    <SelectTrigger id="task-priority" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent align="start">
+                      {taskPriorityEnum.options.map((priority) => (
+                        <SelectItem key={priority} value={priority}>
+                          {PRIORITY_LABELS[priority]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </Field>
 
             <Field>
@@ -217,21 +259,6 @@ function Field({
       {children}
       {error ? <p className="text-destructive text-xs">{error}</p> : null}
     </div>
-  );
-}
-
-function NativeSelect({
-  className,
-  ...props
-}: React.ComponentProps<'select'>) {
-  return (
-    <select
-      className={cn(
-        'border-input bg-background h-8 w-full rounded-lg border px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30',
-        className,
-      )}
-      {...props}
-    />
   );
 }
 

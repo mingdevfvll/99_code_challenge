@@ -55,7 +55,7 @@ export function TaskTable({
   return (
     <section
       aria-label="Task list"
-      className="border-border/60 bg-card relative overflow-hidden rounded-lg border shadow-sm"
+      className="border-border/70 bg-card/90 relative overflow-hidden rounded-xl border shadow-sm backdrop-blur"
     >
       {isFetching && !isLoading ? (
         <div className="from-primary/40 via-primary to-primary/40 absolute inset-x-0 top-0 h-0.5 animate-pulse bg-gradient-to-r" />
@@ -64,7 +64,7 @@ export function TaskTable({
       <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-border/60 text-muted-foreground border-b text-left text-xs uppercase tracking-wide">
+            <tr className="border-border/60 bg-muted/30 text-muted-foreground border-b text-left text-xs uppercase tracking-wide">
               <th className="px-4 py-3 font-medium">Task</th>
               <th className="px-4 py-3 font-medium">Status</th>
               <th className="px-4 py-3 font-medium">Priority</th>
@@ -124,7 +124,7 @@ export function TaskTable({
       ) : null}
 
       {!isLoading && !isError && tasks.length > 0 ? (
-        <div className="border-border/60 flex items-center justify-between border-t px-4 py-3">
+        <div className="border-border/60 bg-muted/20 flex items-center justify-between border-t px-4 py-3">
           <span className="text-muted-foreground text-xs">
             Showing {tasks.length} task{tasks.length === 1 ? '' : 's'}
             {hasNextPage ? ' (more available)' : ''}

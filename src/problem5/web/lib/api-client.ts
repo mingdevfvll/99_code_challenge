@@ -89,7 +89,12 @@ async function request<T>(
   }
 
   const text = await res.text();
-  const parsed = text ? (JSON.parse(text) as unknown) : undefined;
+  let parsed: unknown;
+  try {
+    parsed = text ? (JSON.parse(text) as unknown) : undefined;
+  } catch {
+    parsed = undefined;
+  }
 
   if (!res.ok) {
     const envelope = (parsed as ApiErrorEnvelope | undefined)?.error;
@@ -100,7 +105,15 @@ async function request<T>(
     // don't have to special-case "the world didn't answer in JSON".
     throw new ApiError(res.status, {
       code: 'NETWORK_ERROR',
-      message: res.statusText || 'Request failed',
+      message: res.statusText || text.slice(0, 120) || 'Request failed',
+      requestId,
+    });
+  }
+
+  if (parsed === undefined && text) {
+    throw new ApiError(res.status, {
+      code: 'INVALID_RESPONSE',
+      message: 'API returned a non-JSON response.',
       requestId,
     });
   }

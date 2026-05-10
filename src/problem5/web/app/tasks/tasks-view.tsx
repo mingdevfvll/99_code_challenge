@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Plus } from 'lucide-react';
+import { CircleCheck, Clock3, ListChecks, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
@@ -37,6 +37,8 @@ export function TasksView() {
     () => query.data?.pages.flatMap((p) => p.data) ?? [],
     [query.data],
   );
+  const doneCount = tasks.filter((task) => task.status === 'DONE').length;
+  const activeCount = tasks.filter((task) => task.status !== 'DONE' && task.status !== 'ARCHIVED').length;
 
   async function submitForm(input: CreateTaskInput | UpdateTaskInput) {
     if (formState.mode === 'edit' && formState.task) {
@@ -67,15 +69,25 @@ export function TasksView() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
-          <p className="text-muted-foreground text-sm">
-            Track work across status, priority, and due date.
-          </p>
+    <div className="flex flex-col gap-5">
+      <header className="border-border/70 bg-card/80 flex flex-wrap items-center justify-between gap-4 rounded-xl border p-4 shadow-sm backdrop-blur sm:p-5">
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="bg-primary/10 text-primary mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+            <ListChecks className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+              Problem 5 workspace
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight">Tasks</h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Track work across status, priority, and due date.
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <HeaderStat icon={Clock3} label="Active" value={activeCount} />
+          <HeaderStat icon={CircleCheck} label="Done" value={doneCount} />
           <ThemeToggle />
           <Button onClick={openCreateDialog} className="gap-1.5">
             <Plus className="h-4 w-4" />
@@ -145,3 +157,21 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
   DONE: 'Done',
   ARCHIVED: 'Archived',
 };
+
+function HeaderStat({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className="border-border/70 bg-background/70 hidden h-9 items-center gap-2 rounded-lg border px-2.5 text-sm shadow-sm sm:flex">
+      <Icon className="text-muted-foreground h-3.5 w-3.5" aria-hidden="true" />
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium tabular-nums">{value}</span>
+    </div>
+  );
+}

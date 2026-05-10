@@ -7,6 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { TaskPriorityBadge } from './task-priority-badge';
 import { formatDate } from '@/lib/format-date';
 import { cn } from '@/lib/utils';
@@ -169,23 +176,54 @@ function StatusMenu({
   onStatusChange: (task: Task, status: TaskStatus) => void;
 }) {
   return (
-    <select
+    <Select
       value={task.status}
-      onChange={(event) => onStatusChange(task, event.target.value as TaskStatus)}
-      aria-label={`Change status for ${task.title}`}
-      className={cn(
-        'border-input bg-background h-7 rounded-full border px-2 text-xs font-medium outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30',
-        task.status === 'TODO' && 'text-slate-700 dark:text-slate-200',
-        task.status === 'IN_PROGRESS' && 'text-blue-700 dark:text-blue-200',
-        task.status === 'DONE' && 'text-emerald-700 dark:text-emerald-200',
-        task.status === 'ARCHIVED' && 'text-zinc-500 dark:text-zinc-400',
-      )}
+      onValueChange={(value) => onStatusChange(task, value as TaskStatus)}
+      items={taskStatusEnum.options.map((status) => ({ value: status, label: STATUS_LABELS[status] }))}
     >
-      {taskStatusEnum.options.map((status) => (
-        <option key={status} value={status}>
-          {STATUS_LABELS[status]}
-        </option>
-      ))}
-    </select>
+      <SelectTrigger
+        size="sm"
+        aria-label={`Change status for ${task.title}`}
+        className={cn(
+          'h-7 rounded-full border px-2.5 text-xs font-medium shadow-none [&_[data-slot=select-value]]:gap-1.5',
+          task.status === 'TODO' && 'border-slate-300/60 bg-slate-100/80 text-slate-700 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-200',
+          task.status === 'IN_PROGRESS' && 'border-blue-300/70 bg-blue-100/80 text-blue-700 dark:border-blue-700 dark:bg-blue-900/40 dark:text-blue-200',
+          task.status === 'DONE' && 'border-emerald-300/70 bg-emerald-100/80 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200',
+          task.status === 'ARCHIVED' && 'border-zinc-300/60 bg-zinc-100/80 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-400',
+        )}
+      >
+        <SelectValue>
+          {(value) => (
+            <>
+              <StatusDot status={(value ?? task.status) as TaskStatus} />
+              {STATUS_LABELS[(value ?? task.status) as TaskStatus]}
+            </>
+          )}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent align="start" className="w-44 p-1.5">
+        {taskStatusEnum.options.map((status) => (
+          <SelectItem key={status} value={status} className="py-1.5">
+            <StatusDot status={status} />
+            <span>{STATUS_LABELS[status]}</span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+function StatusDot({ status }: { status: TaskStatus }) {
+  return (
+    <span
+      className={cn(
+        'h-1.5 w-1.5 rounded-full',
+        status === 'TODO' && 'bg-slate-400',
+        status === 'IN_PROGRESS' && 'bg-blue-500',
+        status === 'DONE' && 'bg-emerald-500',
+        status === 'ARCHIVED' && 'bg-zinc-400',
+      )}
+      aria-hidden="true"
+    />
   );
 }

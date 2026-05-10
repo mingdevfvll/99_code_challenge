@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowUpDown, Check, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -79,18 +79,22 @@ export function TaskFiltersBar({ filters, setFilters, clearFilters, hasActiveFil
     setFilters((prev) => ({ ...prev, q: debounced || undefined }));
   }, [debounced, filters.q, setFilters]);
 
-  const toggleStatus = (s: TaskStatus) => {
+  const setStatus = (s: TaskStatus, checked: boolean) => {
     setFilters((prev) => {
-      const cur = prev.status ?? [];
-      const next = cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s];
+      const cur = new Set(prev.status ?? []);
+      if (checked) cur.add(s);
+      else cur.delete(s);
+      const next = Array.from(cur);
       return { ...prev, status: next.length ? next : undefined };
     });
   };
 
-  const togglePriority = (p: TaskPriority) => {
+  const setPriority = (p: TaskPriority, checked: boolean) => {
     setFilters((prev) => {
-      const cur = prev.priority ?? [];
-      const next = cur.includes(p) ? cur.filter((x) => x !== p) : [...cur, p];
+      const cur = new Set(prev.priority ?? []);
+      if (checked) cur.add(p);
+      else cur.delete(p);
+      const next = Array.from(cur);
       return { ...prev, priority: next.length ? next : undefined };
     });
   };
@@ -115,8 +119,8 @@ export function TaskFiltersBar({ filters, setFilters, clearFilters, hasActiveFil
           setFilters={setFilters}
           clearFilters={clearFilters}
           hasActiveFilters={hasActiveFilters}
-          toggleStatus={toggleStatus}
-          togglePriority={togglePriority}
+          setStatus={setStatus}
+          setPriority={setPriority}
           setSort={setSort}
         />
       </div>
@@ -149,8 +153,8 @@ export function TaskFiltersBar({ filters, setFilters, clearFilters, hasActiveFil
                 setFilters={setFilters}
                 clearFilters={clearFilters}
                 hasActiveFilters={hasActiveFilters}
-                toggleStatus={toggleStatus}
-                togglePriority={togglePriority}
+                setStatus={setStatus}
+                setPriority={setPriority}
                 setSort={setSort}
                 mobile
               />
@@ -178,8 +182,8 @@ function FilterControls({
   setFilters,
   clearFilters,
   hasActiveFilters,
-  toggleStatus,
-  togglePriority,
+  setStatus,
+  setPriority,
   setSort,
   mobile = false,
 }: {
@@ -189,8 +193,8 @@ function FilterControls({
   setFilters: Props['setFilters'];
   clearFilters: () => void;
   hasActiveFilters: boolean;
-  toggleStatus: (status: TaskStatus) => void;
-  togglePriority: (priority: TaskPriority) => void;
+  setStatus: (status: TaskStatus, checked: boolean) => void;
+  setPriority: (priority: TaskPriority, checked: boolean) => void;
   setSort: (sort: TaskSort | undefined) => void;
   mobile?: boolean;
 }) {
@@ -214,7 +218,7 @@ function FilterControls({
           activeCount={filters.status?.length ?? 0}
           options={taskStatusEnum.options.map((s) => ({ value: s, label: STATUS_LABELS[s] }))}
           selected={new Set(filters.status ?? [])}
-          onToggle={(v) => toggleStatus(v as TaskStatus)}
+          onCheckedChange={(v, checked) => setStatus(v as TaskStatus, checked)}
           onClear={() => setFilters((prev) => ({ ...prev, status: undefined }))}
         />
 
@@ -223,7 +227,7 @@ function FilterControls({
           activeCount={filters.priority?.length ?? 0}
           options={taskPriorityEnum.options.map((p) => ({ value: p, label: PRIORITY_LABELS[p] }))}
           selected={new Set(filters.priority ?? [])}
-          onToggle={(v) => togglePriority(v as TaskPriority)}
+          onCheckedChange={(v, checked) => setPriority(v as TaskPriority, checked)}
           onClear={() => setFilters((prev) => ({ ...prev, priority: undefined }))}
         />
 
@@ -252,14 +256,14 @@ function FilterDropdown({
   activeCount,
   options,
   selected,
-  onToggle,
+  onCheckedChange,
   onClear,
 }: {
   label: string;
   activeCount: number;
   options: ReadonlyArray<{ value: string; label: string }>;
   selected: Set<string>;
-  onToggle: (value: string) => void;
+  onCheckedChange: (value: string, checked: boolean) => void;
   onClear: () => void;
 }) {
   return (
@@ -269,7 +273,10 @@ function FilterDropdown({
           <Button
             variant="outline"
             size="sm"
-            className={cn('gap-1.5', activeCount > 0 && 'border-primary/40')}
+            className={cn(
+              'gap-1.5 rounded-full border-border/80 bg-card/80 px-3 shadow-sm hover:bg-accent',
+              activeCount > 0 && 'border-primary/40 bg-primary/5 text-primary',
+            )}
           >
             {label}
             {activeCount > 0 ? (
@@ -280,14 +287,15 @@ function FilterDropdown({
           </Button>
         }
       />
-      <DropdownMenuContent align="start" className="w-44">
+      <DropdownMenuContent align="start" className="w-52 p-1.5">
         <DropdownMenuLabel className="text-xs">{label}</DropdownMenuLabel>
         {options.map((opt) => (
           <DropdownMenuCheckboxItem
             key={opt.value}
+            closeOnClick={false}
             checked={selected.has(opt.value)}
-            onCheckedChange={() => onToggle(opt.value)}
-            onSelect={(e) => e.preventDefault()}
+            onCheckedChange={(checked) => onCheckedChange(opt.value, checked)}
+            className="py-1.5"
           >
             {opt.label}
           </DropdownMenuCheckboxItem>
@@ -317,17 +325,26 @@ function SortDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" size="sm" className="gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            className={cn(
+              'gap-1.5 rounded-full border-border/80 bg-card/80 px-3 shadow-sm hover:bg-accent',
+              sort && sort !== '-createdAt' && 'border-primary/40 bg-primary/5 text-primary',
+            )}
+          >
+            <ArrowUpDown className="h-3.5 w-3.5" aria-hidden="true" />
             Sort: {current ? current.label : 'Newest'}
           </Button>
         }
       />
-      <DropdownMenuContent align="start" className="w-48">
+      <DropdownMenuContent align="start" className="w-56 p-1.5">
         <DropdownMenuLabel className="text-xs">Sort by</DropdownMenuLabel>
         {taskSortOptions.map((opt) => (
           <DropdownMenuItem
             key={opt.value}
             onClick={() => onSelect(opt.value === '-createdAt' ? undefined : opt.value)}
+            className="py-1.5"
           >
             {(sort ?? '-createdAt') === opt.value ? (
               <Check className="mr-2 h-3.5 w-3.5" />
@@ -387,6 +404,14 @@ function ActiveFilterChips({
       remove: () => setFilters((prev) => ({ ...prev, tags: undefined })),
     });
   }
+  if (filters.sort) {
+    const current = taskSortOptions.find((option) => option.value === filters.sort);
+    chips.push({
+      key: 'sort',
+      label: `Sort: ${current?.label ?? filters.sort}`,
+      remove: () => setFilters((prev) => ({ ...prev, sort: undefined })),
+    });
+  }
 
   if (chips.length === 0) return null;
 
@@ -397,7 +422,7 @@ function ActiveFilterChips({
           key={c.key}
           type="button"
           onClick={c.remove}
-          className="bg-muted text-muted-foreground hover:bg-muted/70 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs transition-colors"
+          className="border-border/70 bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs shadow-sm transition-colors"
           aria-label={`Remove filter: ${c.label}`}
         >
           {c.label}
