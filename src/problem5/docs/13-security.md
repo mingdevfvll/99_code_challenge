@@ -38,7 +38,7 @@ The mutation limiter sits between the validate middleware and the controller, so
 
 429 responses include `Retry-After` and `X-RateLimit-*` headers.
 
-The rate limiter keys on `req.ip`. If the API ever sat behind a real proxy, `app.set('trust proxy', n)` would need to be set to the right number of hops. Documented as a TODO inline.
+The rate limiter keys on `req.ip`. If the API ever sat behind a real proxy, `app.set('trust proxy', n)` would need to be set to the right number of hops.
 
 ### Input validation
 

@@ -19,7 +19,7 @@ docker compose up -d postgres redis
 cp .env.example .env
 npm install
 npx prisma generate
-npx prisma migrate dev --name init   # first time only
+npx prisma migrate dev
 npm run dev
 ```
 
@@ -34,7 +34,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-The API image runs `prisma migrate deploy` and `prisma db seed` before starting `node dist/index.js`.
+The API image runs `prisma migrate deploy` and the compiled seed script before starting `node dist/index.js`.
 
 ## Scripts
 
@@ -47,6 +47,7 @@ The API image runs `prisma migrate deploy` and `prisma db seed` before starting 
 | `npm run lint` | ESLint |
 | `npm test` | Vitest (unit + integration) |
 | `npm run test:coverage` | With coverage report |
+| `npm run test:integration` | Start the test Postgres/Redis stack, run Vitest, then tear it down |
 | `npm run db:generate` | Prisma client generation |
 | `npm run db:migrate` | Run pending migrations in dev mode |
 | `npm run db:migrate:deploy` | Run pending migrations in prod mode (no prompts) |

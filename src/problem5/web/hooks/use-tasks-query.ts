@@ -6,8 +6,8 @@ import type { TaskFilters, TaskListResponse } from '@/schemas/task';
 
 const PAGE_SIZE = 20;
 
-// Single key shape for everything Task-list-related. Mutations in Phase 7
-// invalidate via `queryKey: ['tasks', 'list']` to wipe all variants at once.
+// Single key shape for every Task list variant. Mutations invalidate via
+// `queryKey: ['tasks', 'list']` to wipe filtered/sorted lists at once.
 export const taskListQueryKey = (filters: TaskFilters) =>
   ['tasks', 'list', filters] as const;
 

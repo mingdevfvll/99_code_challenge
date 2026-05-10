@@ -1,4 +1,4 @@
-# Implementation Plan — Problem 5: A Crude Server
+# Implementation Plan — Problem 5: CRUD Server
 
 > Author: Ming
 > Date: 2026-05-09
@@ -68,7 +68,7 @@ src/problem5/
 ├── docker-compose.test.yml  ← Override for integration tests
 ├── .env.example
 ├── api/                     ← Express + TS + Prisma backend
-├── web/                     ← Next.js 15 + shadcn admin UI
+├── web/                     ← Next.js 16 + shadcn admin UI
 └── docs/                    ← 13 documents (this file is one)
 ```
 
@@ -100,7 +100,7 @@ Both `api/` and `web/` are independent npm projects. Same shape as how `problem2
 
 | Choice | Why |
 |---|---|
-| Next.js 15 App Router + React 19 | Same as `wallet-app`. Server components are not strictly needed here, but `output: 'standalone'` makes the Docker image small. |
+| Next.js 16 App Router + React 19 | Same architecture as the original plan. Server components are not strictly needed here, but `output: 'standalone'` keeps the Docker image lean. |
 | shadcn/ui + Tailwind 3 | Same as `fancy-ex`. Accessible Radix primitives, full markup control. |
 | TanStack Query 5 | Same as `fancy-ex`'s `usePrices`. Cache, optimistic updates, invalidation. |
 | React Hook Form + zodResolver | Same as `useSwapForm`. Form Zod schema mirrors the API request schema. |
@@ -108,7 +108,7 @@ Both `api/` and `web/` are independent npm projects. Same shape as how `problem2
 
 ### Infra
 
-Docker Compose v2 for local stack. No Kubernetes; that would be theater for an interview submission. `postgres:16-alpine` and `redis:7-alpine` because they're official, small, and the versions I run locally. Multi-stage Dockerfiles, target ~150MB final images.
+Docker Compose v2 for the local stack. No Kubernetes; that would add infrastructure surface area without helping this problem. `postgres:16-alpine` and `redis:7-alpine` because they're official, small, and the versions I run locally. Multi-stage Dockerfiles keep runtime images limited to production assets.
 
 ---
 
@@ -529,7 +529,7 @@ Register every Zod schema with the OpenAPI registry. `/docs` (Swagger UI) and `/
 
 ### Phase 5 — Frontend skeleton (~2h)
 
-Init `web/` as Next.js 15 + App Router. Tailwind + shadcn init. Install primitives: `button`, `dialog`, `input`, `select`, `popover`, `command`, `badge`, `skeleton`, `tooltip`, `dropdown-menu`. Theme provider + `next-themes`. `lib/api-client.ts`, `lib/query-client.ts`, `lib/utils.ts`. `app/layout.tsx`, `app/page.tsx` (redirect), `app/tasks/page.tsx` (empty shell).
+Init `web/` as Next.js 16 + App Router. Tailwind + shadcn init. Install primitives: `button`, `dialog`, `input`, `select`, `popover`, `command`, `badge`, `skeleton`, `tooltip`, `dropdown-menu`. Theme provider + `next-themes`. `lib/api-client.ts`, `lib/query-client.ts`, `lib/utils.ts`. `app/layout.tsx`, `app/page.tsx` (redirect), `app/tasks/page.tsx` (empty shell).
 
 **Done when:** `npm run dev` shows the empty `/tasks` page with header and theme toggle wired.
 
@@ -580,7 +580,7 @@ Stating these now so I don't drift.
 | TanStack Query optimistic update + sort change causes visual jank | Low | Keep sort stable across mutations. Re-fetch silently in the background. |
 | I run over and have to cut Phase 7 polish | Medium | Phase order is intentional. Cuts come off non-visible work first. |
 
-There's one risk I haven't figured out yet: how to make the OpenAPI doc page not look like the default Swagger UI (which is ugly enough to undermine the rest of the polish). I'm leaving this as a known unknown for Phase 4 and will decide between Swagger UI + custom CSS or Scalar API Reference once I see what each costs me in setup time.
+The OpenAPI docs use Swagger UI generated from the Zod-backed OpenAPI document. I considered Scalar for a more polished reference page, but kept Swagger UI to avoid another UI dependency and keep the API contract closer to the generated spec.
 
 ---
 
@@ -623,4 +623,4 @@ I'm writing `12-retrospective.md` twice. Once before code (predicted cuts), once
 
 ---
 
-End of plan. Next action: scaffold `src/problem5/` and start Phase 1.
+End of plan. Current run and verification steps live in `README.md` and `docs/08-runbook.md`.

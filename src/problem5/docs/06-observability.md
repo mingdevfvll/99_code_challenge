@@ -46,7 +46,7 @@ Two endpoints, two different jobs.
 | `/healthz` | Is the process up? | Effectively free. Returns 200 always. |
 | `/readyz` | Can it serve traffic right now? | One Postgres `SELECT 1`, one Redis `PING`. ~5ms. |
 
-The Docker Compose healthcheck for the API uses `/readyz`. The Web container's healthcheck just hits its own `/`. If `/readyz` returns 503, the API container is marked unhealthy and `web` waits.
+The Docker Compose healthcheck for the API uses `/readyz`. The web container's healthcheck hits `/tasks`, which is the primary UI route. If `/readyz` returns 503, the API container is marked unhealthy and `web` waits.
 
 I deliberately don't gate `/readyz` on Redis being up. Cache is non-critical (degrades to no-cache); a Redis outage shouldn't cascade into the API being marked unhealthy and pulled from a load balancer. So `/readyz` returns:
 
@@ -69,7 +69,7 @@ Each is ~30 minutes of work. The reason I'm not doing them: a `/metrics` endpoin
 
 ## Tracing
 
-Same answer as metrics. OpenTelemetry would slot in cleanly because the layers are already named (`controller`, `service`, `repository`); each could span trivially. I'm not adding it for the same reason: a tracing setup with no collector to ship to is theater.
+Same answer as metrics. OpenTelemetry would slot in cleanly because the layers are already named (`controller`, `service`, `repository`); each could span trivially. I'm not adding it for the same reason: a tracing setup with no collector to ship to does not add useful signal.
 
 If asked in interview: `@opentelemetry/sdk-node` + `@opentelemetry/auto-instrumentations-node` gets you 80% of useful traces without any code changes. Adding manual spans around `service` methods and DB calls covers the rest.
 
@@ -80,7 +80,7 @@ If this had to handle, say, 100x the data and 50x the QPS, the changes I'd reach
 1. **Replace `q` ILIKE search** with a `tsvector` column + GIN index, or push search to Meilisearch / Postgres FTS. ILIKE on `text` columns is fine until it isn't, and the cliff is steep.
 2. **Sharding the cache key**. Today `tasks:list:*` invalidates on every write. With multi-tenancy or per-user lists, key on tenant/user. Without that change, write-heavy workloads pay a cache-thrash tax.
 3. **Switch invalidation from `SCAN+DEL` to a versioned namespace**. `tasks:list:v<n>:*`; bump `<n>` on writes; old keys age out via TTL. No SCAN cost.
-4. **Move the API to `node:lts-alpine` with `NODE_ENV=production` and a worker pool** for CPU-bound paths. None today, but if I added export-to-CSV or PDF generation, this is where they go.
+4. **Move the API to a worker pool** for CPU-bound paths. None today, but if I added export-to-CSV or PDF generation, this is where they go.
 5. **Switch list pagination** to cursor-on-every-sort with base64-encoded composite cursors (covered in `03-data-model.md`).
 
 None of this is in scope. Listing here because "knows what to do under load" is what observability documentation is for.

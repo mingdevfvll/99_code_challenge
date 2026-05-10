@@ -6,8 +6,8 @@ import { env } from './env';
 //   3. Translating non-2xx into a typed `ApiError` so React Query handlers
 //      can branch on `code` instead of parsing strings.
 //
-// Real Task type bindings live in `lib/api/tasks.ts` (Phase 6). This file
-// only exposes the transport.
+// Task-specific bindings live in `lib/api/tasks.ts`; this file only owns the
+// transport contract.
 
 export type ApiErrorEnvelope = {
   error: {

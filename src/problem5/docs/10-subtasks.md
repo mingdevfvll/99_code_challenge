@@ -64,7 +64,7 @@
 - [x] `server.ts` — `createApp()`. Wires middleware in pinned order.
 - [x] `index.ts` — bootstrap. SIGTERM/SIGINT handler closes Prisma + Redis before exit.
 - [x] `modules/health/health.routes.ts` — `/healthz`, `/readyz`
-- [x] Debug-only `__debug-throw` route gated by `NODE_ENV !== 'production'` for the error envelope smoke test (remove or keep gated; decide before Phase 8)
+- [x] Debug-only `__debug-throw` route gated by `NODE_ENV !== 'production'` for the error envelope smoke test
 
 ### Verification
 

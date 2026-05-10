@@ -236,11 +236,17 @@ If asked: I'd add a single workflow at `.github/workflows/ci.yml` that detects w
 
 ---
 
-## What I haven't decided yet
+## Resolved time-boxed choices
 
-These are open. They'll be decided during build, and the resolution will land in `12-retrospective.md`.
+These started as open questions during planning. The final build keeps the
+choices explicit so the trade-offs are easy to review.
 
-- **Tag input flavor** — simple text + comma-to-commit, or shadcn-cmdk-style combobox with autosuggest. Simple ships first; combobox is the upgrade if Phase 7 has the budget.
-- **Composite cursors for non-default sorts** — see above. Will reassess at end of Phase 4.
-- **Swagger UI vs Scalar** — the default Swagger UI is ugly enough to undermine the rest of the polish. Scalar's API Reference is a one-component swap and looks better; takes ~20 minutes to evaluate. Will pick during Phase 4.
-- **Whether to keep the `__debug-throw` route in production builds** — useful for smoke testing the error handler against a deployed instance, but a "throw an error" endpoint is a bad smell even when gated. Probably remove before Phase 8.
+- **Tag input flavor** — shipped the simple comma/Enter tag input. It is fast
+  to verify and easy to use from the keyboard.
+- **Composite cursors for non-default sorts** — default sort uses cursor
+  pagination; custom sorts use offset pagination. Documented in the API spec
+  and covered by tests.
+- **Swagger UI vs Scalar** — kept Swagger UI because it stays close to the
+  generated OpenAPI document and avoids another UI dependency.
+- **Debug error routes** — kept them gated behind `NODE_ENV !== 'production'`.
+  Production does not expose synthetic failure endpoints.

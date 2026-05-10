@@ -2,9 +2,8 @@ import { Router } from 'express';
 import { HttpError } from '../../core/errors/http-errors.js';
 
 // Debug-only routes for verifying the error envelope shape. Mounted from
-// server.ts only when NODE_ENV !== 'production'. Decision pending in
-// `docs/11-decisions.md` ("what I haven't decided yet") on whether to remove
-// before Phase 8 or keep gated.
+// server.ts only when NODE_ENV !== 'production', so production builds do not
+// expose synthetic failure endpoints.
 
 const router: Router = Router();
 

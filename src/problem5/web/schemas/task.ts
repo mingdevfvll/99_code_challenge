@@ -63,7 +63,7 @@ export type TaskFilters = {
   sort?: TaskSort;
 };
 
-// ---------- Mutation inputs (used in Phase 7) ---------- //
+// ---------- Mutation inputs ---------- //
 
 export const createTaskInputSchema = z.object({
   title: z.string().trim().min(1, 'Title is required').max(200),

@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { TaskStatus, TaskPriority } from '@prisma/client';
 
 // Single source of truth for Task shapes. The repository, service, and
-// controller infer their types from these. The OpenAPI generator (Phase 4)
-// also reads them. Drift is impossible because there's nothing to drift from.
+// controller infer their types from these. The OpenAPI generator also reads
+// them, so runtime validation and public docs stay aligned.
 
 export const taskStatusEnum = z.nativeEnum(TaskStatus);
 export const taskPriorityEnum = z.nativeEnum(TaskPriority);

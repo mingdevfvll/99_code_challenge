@@ -26,7 +26,7 @@ export function createApp(): Express {
   const app = express();
 
   // Security + traffic shaping first. Helmet defaults are reasonable; the
-  // tightened CSP for /docs lives next to that route in Phase 4.
+  // tightened CSP for /docs lives next to that route.
   app.use(helmet());
 
   app.use(

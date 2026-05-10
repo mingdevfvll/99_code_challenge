@@ -65,9 +65,8 @@ export const taskRepository = {
     const customSort = filters.sort && filters.sort.length > 0;
 
     if (customSort) {
-      // Phase 3 limitation: cursor only on default sort. Custom sorts use
-      // offset via `take + skip`. Without a cursor we always return page 1.
-      // Documented in `docs/11-decisions.md` and `docs/12-retrospective.md`.
+      // Cursor pagination is reserved for the default sort. Custom sorts use
+      // offset via `take + skip`, documented in `docs/11-decisions.md`.
       const orderBy = filters.sort!.map((s) => ({ [s.field]: s.direction }));
       // Append id tiebreaker so order is total.
       orderBy.push({ id: 'desc' });

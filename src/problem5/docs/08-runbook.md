@@ -187,7 +187,7 @@ docker compose up --build
 npx prisma migrate deploy
 ```
 
-If it persists: the API's Docker `command` runs `prisma migrate deploy && node dist/index.js`. If that step is failing silently, check the API container logs:
+If it persists: the API entrypoint runs `prisma migrate deploy`, then the compiled seed script, then `node dist/index.js`. If that step is failing silently, check the API container logs:
 
 ```bash
 docker compose logs api | head -40

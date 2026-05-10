@@ -19,7 +19,7 @@ export default async function setup() {
 
   // Apply migrations to the test database. `migrate deploy` is non-interactive
   // and idempotent — fine to call on every suite start.
-  execSync('npx prisma migrate deploy', {
+  execSync('./node_modules/.bin/prisma migrate deploy', {
     cwd: apiRoot,
     stdio: 'inherit',
     env: { ...process.env },

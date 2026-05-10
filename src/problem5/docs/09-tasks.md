@@ -73,7 +73,7 @@ curl -i http://localhost:4000/__debug-throw   # 500 envelope, has requestId
 - Each curl in `04-api-spec.md` returns the documented response.
 - A list call followed by a create followed by another list shows the new task without staleness.
 
-> Open: I haven't decided whether the cursor for non-default sorts ships in this phase or moves to a stretch. If Phase 3 hits the 3h mark, default-sort-only ships and the stretch is documented in `12-retrospective.md`.
+> Final scope: cursor pagination ships on the default sort. Custom sorts use offset pagination, documented in `11-decisions.md`.
 
 ## Phase 4 — OpenAPI + tests (~2h)
 

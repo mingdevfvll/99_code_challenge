@@ -1,4 +1,4 @@
-# Problem 5 — A Crude Server
+# Problem 5 — CRUD Server
 
 Express 5 + TypeScript CRUD API over a Task resource, with a Next.js 16 admin UI on top. Postgres for persistence, Redis for cache and rate limiting, Docker Compose for the whole stack.
 
