@@ -217,7 +217,7 @@ function StatusDot({ status }: { status: TaskStatus }) {
   return (
     <span
       className={cn(
-        'h-1.5 w-1.5 rounded-full',
+        'inline-block h-1.5 w-1.5 shrink-0 rounded-full align-middle',
         status === 'TODO' && 'bg-slate-400',
         status === 'IN_PROGRESS' && 'bg-blue-500',
         status === 'DONE' && 'bg-emerald-500',
