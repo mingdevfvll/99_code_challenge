@@ -74,7 +74,7 @@ export function SwapForm() {
         <div className="mt-6 flex flex-col gap-4">
           <motion.section
             variants={sectionVariants}
-            className="grid grid-cols-2 gap-3 mb-2"
+            className="grid xs:grid-cols-2 grid-rows-2 gap-3 mb-2"
           >
             <TokenSelector
               label="SEND"

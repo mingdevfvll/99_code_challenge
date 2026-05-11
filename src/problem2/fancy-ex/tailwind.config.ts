@@ -6,6 +6,9 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      screens: {
+        xs: "475px",
+      },
       colors: {
         primary: "var(--color-primary)",
         "primary-foreground": "hsl(var(--primary-foreground))",
