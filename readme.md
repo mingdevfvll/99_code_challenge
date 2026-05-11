@@ -109,21 +109,6 @@ var sum_to_n_c = function(n) {
 
 ---
 
-### Problem 5 — Crude Server
-
-**Brief**
-
-Build a simple server exposing CRUD operations for a resource, then make it easy to run and review. This solution implements a Task resource with an Express/Prisma API, Redis-backed caching/rate limiting, OpenAPI docs, and a Next.js admin UI.
-
-**What to do**
-
-- Open `src/problem5/README.md`.
-- Run `cp .env.example .env && docker compose up --build` from `src/problem5/`.
-- Visit `http://localhost:3000/tasks` for the UI and `http://localhost:4000/docs` for the API reference.
-- Read `src/problem5/docs/00-implementation-plan.md` and `src/problem5/docs/12-retrospective.md` for the implementation story.
-
----
-
 ### Problem 2 — Fancy form (currency swap)
 
 **Brief**
@@ -245,3 +230,34 @@ Write the specification for a software module on the API service (backend applic
 ```
 
 </details>
+
+---
+
+### Problem 5 — Crude Server
+
+**Brief**
+
+Build a simple server exposing CRUD operations for a resource, then make it easy to run and review. This solution implements a Task resource with an Express/Prisma API, Redis-backed caching/rate limiting, OpenAPI docs, and a Next.js admin UI.
+
+**How to read this solution**
+
+Start at `src/problem5/README.md` for the stack summary, folder layout, and quick start. Under `src/problem5/docs/` (14 files), use this order:
+
+- **Short on time:** read `docs/00-implementation-plan.md` first (entry point the nested README recommends).
+- **Deeper dive:** add `docs/02-architecture.md` and `docs/04-api-spec.md` for system shape and HTTP contract.
+- **Running or operating the stack:** use `docs/08-runbook.md`.
+- **Design trade-offs:** see `docs/11-decisions.md`.
+- **Progress and checklist:** `docs/10-subtasks.md`; **retrospective:** `docs/12-retrospective.md`.
+
+Code layout: `api/` is the Express + Prisma backend; `web/` is the Next.js 16 UI; root `docker-compose.yml` wires services.
+
+**What to do**
+
+- Open `src/problem5/README.md` and follow the layout above if you need orientation.
+- Run `cp .env.example .env && docker compose up --build` from `src/problem5/`.
+- Visit `http://localhost:3000/tasks` for the UI and `http://localhost:4000/docs` for the API reference (see also `http://localhost:4000/healthz` and `/readyz` from the nested README).
+- Optionally run package checks as documented in `src/problem5/README.md` (`api/` and `web/` lint, typecheck, test, build).
+
+---
+
+Author: Ming Ng (mingdevfvll@gmail.com) - Created on May 10 2026
