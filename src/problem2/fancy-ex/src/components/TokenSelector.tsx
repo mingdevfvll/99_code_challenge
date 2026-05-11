@@ -93,7 +93,7 @@ export function TokenSelector({
             ) : (
               <span
                 id={valueId}
-                className="font-mono text-sm tracking-wider text-muted-fg"
+                className="text-muted-fg font-mono text-sm tracking-wider"
               >
                 SELECT TOKEN
               </span>
